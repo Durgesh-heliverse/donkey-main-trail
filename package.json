@@ -1,0 +1,46 @@
+{
+  "name": "donkey-trail",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "sanity-codegen": "sanity codegen types --watch"
+  },
+  "dependencies": {
+    "@portabletext/react": "^5.0.0",
+    "@sanity/codegen": "^3.95.0",
+    "@sanity/image-url": "^1.1.0",
+    "@sanity/ui": "^3.1.11",
+    "@sanity/vision": "^3.95.0",
+    "@tanstack/react-query": "^5.81.5",
+    "framer-motion": "^12.23.24",
+    "jspdf": "^3.0.4",
+    "jspdf-autotable": "^5.0.2",
+    "lucide-react": "^0.525.0",
+    "next": "15.3.4",
+    "next-sanity": "^9.12.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sanity": "^3.95.0",
+    "styled-components": "^6.1.19",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/jspdf": "^2.0.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.4",
+    "prettier": "^2.0.0",
+    "sanity-codegen": "^0.9.8",
+    "tailwindcss": "^4",
+    "typescript": "^5.9.3"
+  }
+}
+
