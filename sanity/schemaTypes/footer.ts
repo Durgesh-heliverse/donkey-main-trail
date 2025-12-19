@@ -31,8 +31,8 @@ export default defineType({
       type: "array",
       of: [
         {
-      type: "object",
-      fields: [
+          type: "object",
+          fields: [
             {
               name: "platform",
               title: "Platform",
@@ -159,16 +159,16 @@ export default defineType({
               type: "string",
             },
           ],
-            },
-            {
+        },
+        {
           name: "phone",
           title: "Phone",
-              type: "string",
-            },
-            {
-              name: "email",
-              title: "Email",
-              type: "string",
+          type: "string",
+        },
+        {
+          name: "email",
+          title: "Email",
+          type: "string",
         },
       ],
     }),
@@ -207,7 +207,7 @@ export default defineType({
       ],
     }),
     defineField({
-          name: "copyright",
+      name: "copyright",
       title: "Copyright",
       type: "object",
       fields: [
@@ -235,6 +235,115 @@ export default defineType({
         },
       ],
     }),
+    defineField({
+      name: "termsAndConditions",
+      title: "Terms & Conditions",
+      type: "object",
+      fields: [
+        {
+          name: "introduction",
+          title: "Introduction Text",
+          type: "text",
+          description: "Text shown at the top of the terms modal",
+        },
+        {
+          name: "lastUpdated",
+          title: "Last Updated Date",
+          type: "string",
+          description: "e.g., 'January 2025'",
+        },
+        {
+          name: "sections",
+          title: "Terms Sections",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              fields: [
+                {
+                  name: "title",
+                  title: "Section Title",
+                  type: "string",
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: "icon",
+                  title: "Icon",
+                  type: "string",
+                  options: {
+                    list: [
+                      { title: "Calendar", value: "calendar" },
+                      { title: "Credit Card", value: "creditCard" },
+                      { title: "Alert Triangle", value: "alertTriangle" },
+                      { title: "Shield", value: "shield" },
+                      { title: "Users", value: "users" },
+                      { title: "Map Pin", value: "mapPin" },
+                      { title: "File Text", value: "fileText" },
+                    ],
+                  },
+                  validation: (Rule: any) => Rule.required(),
+                },
+                {
+                  name: "items",
+                  title: "Section Items",
+                  type: "array",
+                  of: [{ type: "string" }],
+                  validation: (Rule: any) => Rule.required(),
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: "questionsSection",
+          title: "Questions Section",
+          type: "object",
+          fields: [
+            {
+              name: "title",
+              title: "Title",
+              type: "string",
+            },
+            {
+              name: "description",
+              title: "Description",
+              type: "text",
+            },
+            {
+              name: "phone",
+              title: "Phone",
+              type: "string",
+            },
+            {
+              name: "email",
+              title: "Email",
+              type: "string",
+            },
+            {
+              name: "address",
+              title: "Address",
+              type: "string",
+            },
+          ],
+        },
+        {
+          name: "agreementSection",
+          title: "Agreement Section",
+          type: "object",
+          fields: [
+            {
+              name: "title",
+              title: "Title",
+              type: "string",
+            },
+            {
+              name: "text",
+              title: "Agreement Text",
+              type: "text",
+            },
+          ],
+        },
+      ],
+    }),
   ],
 });
-

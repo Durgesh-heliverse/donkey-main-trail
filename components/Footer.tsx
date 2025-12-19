@@ -1,8 +1,22 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, Phone, Mail, Facebook, Instagram, ExternalLink } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Facebook,
+  Instagram,
+  ExternalLink,
+  FileText,
+  X,
+  Calendar,
+  CreditCard,
+  AlertTriangle,
+  Shield,
+  Users,
+} from "lucide-react";
 import { urlFor } from "@/sanity/lib/image";
 
 interface FooterProps {
@@ -55,8 +69,38 @@ interface FooterProps {
         href: string;
       };
     };
+    termsAndConditions?: {
+      introduction?: string;
+      lastUpdated?: string;
+      sections?: Array<{
+        title: string;
+        icon: string;
+        items: string[];
+      }>;
+      questionsSection?: {
+        title?: string;
+        description?: string;
+        phone?: string;
+        email?: string;
+        address?: string;
+      };
+      agreementSection?: {
+        title?: string;
+        text?: string;
+      };
+    };
   };
 }
+
+const sectionIconMap: { [key: string]: React.ReactNode } = {
+  calendar: <Calendar className="h-5 w-5 text-orange-600" />,
+  creditCard: <CreditCard className="h-5 w-5 text-orange-600" />,
+  alertTriangle: <AlertTriangle className="h-5 w-5 text-orange-600" />,
+  shield: <Shield className="h-5 w-5 text-orange-600" />,
+  users: <Users className="h-5 w-5 text-orange-600" />,
+  mapPin: <MapPin className="h-5 w-5 text-orange-600" />,
+  fileText: <FileText className="h-5 w-5 text-orange-600" />,
+};
 
 export default function Footer({ data }: FooterProps) {
   const {
@@ -69,15 +113,46 @@ export default function Footer({ data }: FooterProps) {
     contactInfo,
     quickFacts,
     copyright,
+    termsAndConditions,
   } = data;
 
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+
   const handleAvailabilityClick = () => {
-    // This would typically trigger a modal or scroll to availability section
+    // Scroll to contact section
     const contactSection = document.getElementById("contact");
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: "smooth" });
     }
+
+    // Dispatch custom event to open calendar in ContactForm
+    // Small delay to ensure scroll happens first
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("openAvailabilityCalendar"));
+    }, 300);
   };
+
+  const handleTermsClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsTermsModalOpen(true);
+  };
+
+  const handleCloseTermsModal = () => {
+    setIsTermsModalOpen(false);
+  };
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isTermsModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isTermsModalOpen]);
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -165,7 +240,9 @@ export default function Footer({ data }: FooterProps) {
 
           {/* Column 3: Resources */}
           <div>
-            <h3 className="text-lg font-semibold mb-6">{resources?.title || "Resources"}</h3>
+            <h3 className="text-lg font-semibold mb-6">
+              {resources?.title || "Resources"}
+            </h3>
             <ul className="space-y-3">
               {resources?.links?.map((link, index) => (
                 <li key={index}>
@@ -240,7 +317,9 @@ export default function Footer({ data }: FooterProps) {
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   {quickFacts.facts?.map((fact, index) => (
                     <div key={index}>
-                      <span className="text-orange-400 font-medium">{fact.value}</span>
+                      <span className="text-orange-400 font-medium">
+                        {fact.value}
+                      </span>
                       <p className="text-gray-400">{fact.label}</p>
                     </div>
                   ))}
@@ -259,17 +338,160 @@ export default function Footer({ data }: FooterProps) {
             </p>
             {copyright?.termsLink && (
               <div className="flex space-x-6 text-sm">
-                <Link
-                  href={copyright.termsLink.href || "#"}
+                <button
+                  onClick={handleTermsClick}
                   className="text-gray-400 hover:text-green-400 transition-colors duration-200"
                 >
                   {copyright.termsLink.text || "Terms & Conditions"}
-                </Link>
+                </button>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Terms & Conditions Modal */}
+      {isTermsModalOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={handleCloseTermsModal}
+        >
+          <div
+            className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                  <FileText className="h-5 w-5 text-orange-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Terms & Conditions
+                </h2>
+              </div>
+              <button
+                onClick={handleCloseTermsModal}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+              >
+                <X className="h-6 w-6 text-gray-500" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6">
+              <div>
+                {termsAndConditions?.introduction && (
+                  <div className="text-center mb-8">
+                    <p className="text-lg text-gray-600 leading-relaxed">
+                      {termsAndConditions.introduction}
+                    </p>
+                  </div>
+                )}
+
+                {termsAndConditions?.lastUpdated && (
+                  <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6 text-center">
+                    <p className="text-orange-800 font-medium">
+                      Last Updated: {termsAndConditions.lastUpdated}
+                    </p>
+                  </div>
+                )}
+
+                <div className="space-y-6">
+                  {/* Dynamic Sections */}
+                  {termsAndConditions?.sections &&
+                    termsAndConditions.sections.length > 0 &&
+                    termsAndConditions.sections.map((section, index) => (
+                      <div key={index} className="bg-gray-50 rounded-xl p-6">
+                        <div className="flex items-center space-x-3 mb-4">
+                          <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                            {sectionIconMap[section.icon] || (
+                              <FileText className="h-5 w-5 text-orange-600" />
+                            )}
+                          </div>
+                          <h3 className="text-xl font-bold text-gray-900">
+                            {section.title}
+                          </h3>
+                        </div>
+                        {section.items && section.items.length > 0 && (
+                          <ul className="space-y-2">
+                            {section.items.map((item, itemIndex) => (
+                              <li
+                                key={itemIndex}
+                                className="flex items-start space-x-3"
+                              >
+                                <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <p className="text-gray-700 leading-relaxed text-sm">
+                                  {item}
+                                </p>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    ))}
+
+                  {/* Questions Section */}
+                  {termsAndConditions?.questionsSection && (
+                    <div className="bg-gray-50 rounded-xl p-6 mt-6">
+                      <div className="flex items-center space-x-3 mb-4">
+                        <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                          <Phone className="h-5 w-5 text-orange-600" />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900">
+                          {termsAndConditions.questionsSection.title ||
+                            "Questions About These Terms?"}
+                        </h3>
+                      </div>
+                      {termsAndConditions.questionsSection.description && (
+                        <p className="text-gray-700 mb-3 text-sm">
+                          {termsAndConditions.questionsSection.description}
+                        </p>
+                      )}
+                      <div className="space-y-1 text-gray-700 text-sm">
+                        {termsAndConditions.questionsSection.phone && (
+                          <p>
+                            <strong>Phone:</strong>{" "}
+                            {termsAndConditions.questionsSection.phone}
+                          </p>
+                        )}
+                        {termsAndConditions.questionsSection.email && (
+                          <p>
+                            <strong>Email:</strong>{" "}
+                            {termsAndConditions.questionsSection.email}
+                          </p>
+                        )}
+                        {termsAndConditions.questionsSection.address && (
+                          <p>
+                            <strong>Address:</strong>{" "}
+                            {termsAndConditions.questionsSection.address}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Agreement Section */}
+                  {termsAndConditions?.agreementSection && (
+                    <div className="bg-orange-600 text-white rounded-xl p-6 mt-6 text-center">
+                      {termsAndConditions.agreementSection.title && (
+                        <h4 className="text-lg font-bold mb-3">
+                          {termsAndConditions.agreementSection.title}
+                        </h4>
+                      )}
+                      {termsAndConditions.agreementSection.text && (
+                        <p className="leading-relaxed text-sm">
+                          {termsAndConditions.agreementSection.text}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </footer>
   );
 }

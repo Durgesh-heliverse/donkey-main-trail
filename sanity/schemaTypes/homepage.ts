@@ -38,7 +38,8 @@ export default defineType({
           name: "description",
           title: "Description",
           type: "text",
-          description: "e.g., 'Join us today and discover the Hidden Heritage of the Swartberg Mountains trails!'",
+          description:
+            "e.g., 'Join us today and discover the Hidden Heritage of the Swartberg Mountains trails!'",
           validation: (Rule) => Rule.required(),
         },
         {
@@ -80,16 +81,16 @@ export default defineType({
           title: "Primary Button (Orange)",
           type: "object",
           fields: [
-            { 
-              name: "text", 
-              title: "Button Text", 
+            {
+              name: "text",
+              title: "Button Text",
               type: "string",
               description: "e.g., 'Explore the Trail'",
               validation: (Rule) => Rule.required(),
             },
-            { 
-              name: "link", 
-              title: "Button Link", 
+            {
+              name: "link",
+              title: "Button Link",
               type: "string",
               validation: (Rule) => Rule.required(),
             },
@@ -100,16 +101,16 @@ export default defineType({
           title: "Secondary Button (Translucent)",
           type: "object",
           fields: [
-            { 
-              name: "text", 
-              title: "Button Text", 
+            {
+              name: "text",
+              title: "Button Text",
               type: "string",
               description: "e.g., 'View Trail Map'",
               validation: (Rule) => Rule.required(),
             },
-            { 
-              name: "link", 
-              title: "Button Link", 
+            {
+              name: "link",
+              title: "Button Link",
               type: "string",
               validation: (Rule) => Rule.required(),
             },
@@ -337,7 +338,8 @@ export default defineType({
           name: "mapUrl",
           title: "Map URL",
           type: "url",
-          description: "Map iframe URL (e.g., https://tracedetrail.fr/en/iframe/8022)",
+          description:
+            "Map iframe URL (e.g., https://tracedetrail.fr/en/iframe/8022)",
         },
         {
           name: "legend",
@@ -353,7 +355,7 @@ export default defineType({
                   type: "string",
                   options: {
                     list: [
-                      { title: "Start Point", value: "start" },
+                      { title: "Brown", value: "brown" },
                       { title: "Accommodation", value: "accommodation" },
                       { title: "Viewpoint", value: "viewpoint" },
                       { title: "End Point", value: "end" },
@@ -421,17 +423,19 @@ export default defineType({
                 },
                 {
                   name: "type",
-                  title: "Point Type",
+                  title: "Icon Color",
                   type: "string",
                   options: {
                     list: [
-                      { title: "Start Point", value: "start" },
-                      { title: "Accommodation", value: "accommodation" },
-                      { title: "Viewpoint", value: "viewpoint" },
-                      { title: "End Point", value: "end" },
+                      { title: "Brown", value: "brown" },
+                      { title: "Green", value: "green" },
+                      { title: "Stone", value: "stone" },
+                      { title: "Red", value: "red" },
+                      { title: "Orange", value: "orange" },
                     ],
                   },
-                  validation: (Rule) => Rule.required(),
+                  initialValue: "brown",
+                  validation: (Rule: any) => Rule.required(),
                 },
                 {
                   name: "icon",
@@ -445,6 +449,18 @@ export default defineType({
                       { title: "Utensils", value: "utensils" },
                       { title: "Mountain", value: "mountain" },
                     ],
+                  },
+                  description:
+                    "Select a predefined icon (used if custom icon is not uploaded)",
+                },
+                {
+                  name: "customIcon",
+                  title: "Custom Icon (Optional)",
+                  type: "image",
+                  description:
+                    "Upload a custom icon image. If provided, this will be used instead of the predefined icon above. Recommended: square image (1:1 ratio), max 128x128px for best results.",
+                  options: {
+                    hotspot: true,
                   },
                 },
                 {
@@ -1066,7 +1082,8 @@ export default defineType({
                       title: "Content",
                       type: "array",
                       of: [{ type: "string" }],
-                      description: "Each line as a separate item (for multi-line addresses)",
+                      description:
+                        "Each line as a separate item (for multi-line addresses)",
                     },
                   ],
                 },
@@ -1207,7 +1224,8 @@ export default defineType({
               title: "Available Dates",
               type: "array",
               of: [{ type: "date" }],
-              description: "Select dates that are available for booking (green color)",
+              description:
+                "Select dates that are available for booking (green color)",
             },
             {
               name: "fullyBookedDates",
@@ -1249,6 +1267,26 @@ export default defineType({
             },
           ],
         },
+        {
+          name: "successMessage",
+          title: "Success Message",
+          type: "object",
+          fields: [
+            {
+              name: "title",
+              title: "Title",
+              type: "string",
+              description: "e.g., 'Message Sent!'",
+            },
+            {
+              name: "description",
+              title: "Description",
+              type: "text",
+              description:
+                "e.g., 'Thank you for reaching out. We'll respond within 24 hours.'",
+            },
+          ],
+        },
       ],
     }),
     // Gallery Section
@@ -1278,7 +1316,8 @@ export default defineType({
           name: "filters",
           title: "Filter Tabs",
           type: "array",
-          description: "Custom filter tabs (defaults: Videos, Trails, Fauna & Flora, Camping & Accommodation)",
+          description:
+            "Custom filter tabs (defaults: Videos, Trails, Fauna & Flora, Camping & Accommodation)",
           of: [
             {
               type: "object",
@@ -1292,7 +1331,8 @@ export default defineType({
                   name: "value",
                   title: "Value",
                   type: "string",
-                  description: "Lowercase, no spaces (e.g., 'videos', 'trails', 'fauna & flora')",
+                  description:
+                    "Lowercase, no spaces (e.g., 'videos', 'trails', 'fauna & flora')",
                 },
               ],
             },
@@ -1351,7 +1391,8 @@ export default defineType({
                   name: "filter",
                   title: "Filter Category",
                   type: "string",
-                  description: "Filter value (e.g., 'videos', 'trails', 'fauna & flora', 'camping & accommodation')",
+                  description:
+                    "Filter value (e.g., 'videos', 'trails', 'fauna & flora', 'camping & accommodation')",
                   validation: (Rule) => Rule.required(),
                 },
               ],

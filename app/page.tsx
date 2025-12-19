@@ -83,6 +83,9 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
       difficulty,
       type,
       icon,
+      customIcon {
+        asset
+      },
       description,
       highlights,
       images[] {
@@ -233,6 +236,10 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
         phone,
         email
       }
+    },
+    successMessage {
+      title,
+      description
     }
   },
   gallery {
@@ -263,7 +270,8 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
 const DEFAULT_HERO_DATA = {
   title: "The Legendary",
   highlightedText: "Donkey Trail",
-  description: "Join us today and discover the Hidden Heritage of the Swartberg Mountains trails!",
+  description:
+    "Join us today and discover the Hidden Heritage of the Swartberg Mountains trails!",
   promotionalTag: "Calitzdorp's Premier Hiking Experience",
   trailStats: {
     totalDistance: "77km",
@@ -284,7 +292,8 @@ const DEFAULT_TRAIL_INFO = {
   aboutSection: {
     title: "About the",
     highlightedText: "Donkey Trail",
-    description: "Long ago, before modern roads, the daring 'Donkey Trail' over the majestic Swartberg Mountain connected Calitzdorp to Die Hel—the sole lifeline linking this remote region to the outside world. Join us on a memorable hike along this historic route, and step back in time to experience the rugged beauty and storied past of the trail that once carried hope and connection through challenging terrains.",
+    description:
+      "Long ago, before modern roads, the daring 'Donkey Trail' over the majestic Swartberg Mountain connected Calitzdorp to Die Hel—the sole lifeline linking this remote region to the outside world. Join us on a memorable hike along this historic route, and step back in time to experience the rugged beauty and storied past of the trail that once carried hope and connection through challenging terrains.",
     stats: [
       { icon: "map", value: "77km", label: "Total Distance" },
       { icon: "clock", value: "5 Days", label: "Duration" },
@@ -296,27 +305,32 @@ const DEFAULT_TRAIL_INFO = {
     {
       icon: "award",
       title: "UNESCO World Heritage Site",
-      description: "Experience walking through the breathtaking Swartberg Mountains, recognized globally for their outstanding natural beauty and geological significance.",
+      description:
+        "Experience walking through the breathtaking Swartberg Mountains, recognized globally for their outstanding natural beauty and geological significance.",
     },
     {
       icon: "clock",
       title: "Historical Gamkaskloof",
-      description: "Explore the legendary 'Die Hel,' a remote and rugged area rich in history and untouched wilderness, the Donkey Trail was once a vital trade route for this community.",
+      description:
+        "Explore the legendary 'Die Hel,' a remote and rugged area rich in history and untouched wilderness, the Donkey Trail was once a vital trade route for this community.",
     },
     {
       icon: "camera",
       title: "Scenic Bosch Luys Kloof",
-      description: "Conclude your journey at the stunning Bosch Luys Kloof, a pristine nature reserve renowned for its dramatic cliffs, clear streams and landscapes.",
+      description:
+        "Conclude your journey at the stunning Bosch Luys Kloof, a pristine nature reserve renowned for its dramatic cliffs, clear streams and landscapes.",
     },
     {
       icon: "heart",
       title: "Cultural and Natural Heritage",
-      description: "Traverse a trail steeped in history, from ancient pathways used by early explorers to vibrant flora and fauna thriving in this protected landscape. Along the way, experience the warmth of Karoo hospitality, and uncover the fascinating cultures that make this region truly special while supporting local communities.",
+      description:
+        "Traverse a trail steeped in history, from ancient pathways used by early explorers to vibrant flora and fauna thriving in this protected landscape. Along the way, experience the warmth of Karoo hospitality, and uncover the fascinating cultures that make this region truly special while supporting local communities.",
     },
   ],
   historicalNote: {
     title: "Historical Note",
-    content: "Between the years 1830 and 1962 the inhabitants of the isolated valley of Gamkaskloof (Die Hel) had no road access into the valley. Access was only possible via a few footpaths which crossed the mountains and connected the valley to Calitzdorp and Prince Albert. These paths were used for transporting their produce from the valley to the markets and for bringing supplies to the area. Donkeys were utilized to carry the items from the valley to Calitzdorp via the Wyenek route.",
+    content:
+      "Between the years 1830 and 1962 the inhabitants of the isolated valley of Gamkaskloof (Die Hel) had no road access into the valley. Access was only possible via a few footpaths which crossed the mountains and connected the valley to Calitzdorp and Prince Albert. These paths were used for transporting their produce from the valley to the markets and for bringing supplies to the area. Donkeys were utilized to carry the items from the valley to Calitzdorp via the Wyenek route.",
   },
   carousel: {
     images: [
@@ -328,7 +342,8 @@ const DEFAULT_TRAIL_INFO = {
           icon: "award",
           title: "UNESCO World Heritage Site",
           subtitle: "Cape Floral Region",
-          description: "The Swartberg Mountains were declared part of the Cape Floral Region World Heritage Site in June 2004. This declaration was made by UNESCO in recognition of the region's exceptional biodiversity and the unique fynbos vegetation found there.",
+          description:
+            "The Swartberg Mountains were declared part of the Cape Floral Region World Heritage Site in June 2004. This declaration was made by UNESCO in recognition of the region's exceptional biodiversity and the unique fynbos vegetation found there.",
         },
       },
     ],
@@ -338,7 +353,8 @@ const DEFAULT_TRAIL_INFO = {
 const DEFAULT_INTERACTIVE_MAP = {
   title: "Interactive",
   highlightedText: "Trail Map",
-  description: "Explore the complete Donkey Trail route with detailed information about each section, accommodation points, and key highlights along the way.",
+  description:
+    "Explore the complete Donkey Trail route with detailed information about each section, accommodation points, and key highlights along the way.",
   mapUrl: "https://tracedetrail.fr/en/iframe/8022",
   legend: [
     { type: "start", label: "Start Point", color: "#92400e" },
@@ -355,7 +371,8 @@ const DEFAULT_INTERACTIVE_MAP = {
       difficulty: "Moderate",
       type: "start",
       icon: "mapPin",
-      description: "Trail starting point with retreat facilities and mountain views",
+      description:
+        "Trail starting point with retreat facilities and mountain views",
       highlights: ["Retreat facilities", "Mountain views", "Starting point"],
       images: [],
     },
@@ -405,12 +422,28 @@ const DEFAULT_INTERACTIVE_MAP = {
 const DEFAULT_PRACTICAL_INFO = {
   title: "Practical",
   highlightedText: "Information",
-  description: "Everything you need to know to plan and prepare for your Donkey Trail adventure. From booking procedures to essential gear, we've got you covered.",
+  description:
+    "Everything you need to know to plan and prepare for your Donkey Trail adventure. From booking procedures to essential gear, we've got you covered.",
   tabs: [
-    { id: "booking", label: "Booking & Permits", icon: "calendar", shortLabel: "" },
-    { id: "costs", label: "Costs & Fees", icon: "dollarSign", shortLabel: "ZAR" },
+    {
+      id: "booking",
+      label: "Booking & Permits",
+      icon: "calendar",
+      shortLabel: "",
+    },
+    {
+      id: "costs",
+      label: "Costs & Fees",
+      icon: "dollarSign",
+      shortLabel: "ZAR",
+    },
     { id: "packing", label: "Packing List", icon: "backpack", shortLabel: "" },
-    { id: "safety", label: "Safety Tips", icon: "alertTriangle", shortLabel: "" },
+    {
+      id: "safety",
+      label: "Safety Tips",
+      icon: "alertTriangle",
+      shortLabel: "",
+    },
   ],
   bookingPermits: {
     title: "Booking & Permits",
@@ -419,24 +452,28 @@ const DEFAULT_PRACTICAL_INFO = {
         icon: "calendar",
         iconColor: "blue",
         title: "Advance Booking Required",
-        description: "Please enquire about availability in advance. We do not accept walk-ins",
+        description:
+          "Please enquire about availability in advance. We do not accept walk-ins",
       },
       {
         icon: "checkCircle",
         iconColor: "orange",
         title: "Permit System",
-        description: "All hikers must have permits, which are obtained by the Donkey trail operator, please inform the operator whether you are a Wild Card holder or not",
+        description:
+          "All hikers must have permits, which are obtained by the Donkey trail operator, please inform the operator whether you are a Wild Card holder or not",
       },
       {
         icon: "info",
         iconColor: "yellow",
         title: "Cancellation Policy",
-        description: "An alternate date will be agreed on should bad weather impact the hike",
+        description:
+          "An alternate date will be agreed on should bad weather impact the hike",
       },
     ],
     bookingInfo: {
       title: "How to Book",
-      description: "Contact Erika Calitz to check availability or complete the form and we will get back to you within 48hours.",
+      description:
+        "Contact Erika Calitz to check availability or complete the form and we will get back to you within 48hours.",
       contactInfo: {
         calls: "073 593 4007",
         whatsapp: "083 628 9394",
@@ -473,7 +510,8 @@ const DEFAULT_PRACTICAL_INFO = {
     ],
     specialRequirements: {
       title: "Special Requirements",
-      description: "For special dietary requirements, accessibility needs, or any other special arrangements, please contact us directly.",
+      description:
+        "For special dietary requirements, accessibility needs, or any other special arrangements, please contact us directly.",
       email: "info@donkeytrail.com",
     },
   },
@@ -525,25 +563,29 @@ const DEFAULT_PRACTICAL_INFO = {
         type: "warning",
         icon: "alertTriangle",
         title: "River Crossings",
-        description: "Rivers can rise rapidly after rain. Never attempt crossings in flood conditions.",
+        description:
+          "Rivers can rise rapidly after rain. Never attempt crossings in flood conditions.",
       },
       {
         type: "info",
         icon: "info",
         title: "Weather Awareness",
-        description: "Coastal weather changes quickly. Check forecasts and be prepared for rain.",
+        description:
+          "Coastal weather changes quickly. Check forecasts and be prepared for rain.",
       },
       {
         type: "info",
         icon: "checkCircle",
         title: "Wildlife Encounters",
-        description: "Keep food secured. Baboons are present - never feed or approach them.",
+        description:
+          "Keep food secured. Baboons are present - never feed or approach them.",
       },
       {
         type: "warning",
         icon: "alertTriangle",
         title: "Emergency Procedures",
-        description: "Carry emergency contacts. Cell coverage is limited - inform others of your plans.",
+        description:
+          "Carry emergency contacts. Cell coverage is limited - inform others of your plans.",
       },
     ],
     emergencyContacts: [
@@ -557,10 +599,12 @@ const DEFAULT_PRACTICAL_INFO = {
 const DEFAULT_TESTIMONIALS = {
   title: "Voices from the",
   highlightedText: "Trail",
-  description: "Hear from fellow adventurers who have walked the legendary Donkey Trail and discovered the transformative power of this extraordinary journey.",
+  description:
+    "Hear from fellow adventurers who have walked the legendary Donkey Trail and discovered the transformative power of this extraordinary journey.",
   testimonials: [
     {
-      quote: "Standing at the viewpoint overlooking Die Hel, I understood why this place captured the hearts of early settlers. The trail doesn't just show you beautiful landscapes—it tells the story of human resilience and the enduring power of nature.",
+      quote:
+        "Standing at the viewpoint overlooking Die Hel, I understood why this place captured the hearts of early settlers. The trail doesn't just show you beautiful landscapes—it tells the story of human resilience and the enduring power of nature.",
       author: {
         name: "Lisa Rodriguez",
         location: "Barcelona, Spain",
@@ -569,7 +613,8 @@ const DEFAULT_TESTIMONIALS = {
       rating: 5,
     },
     {
-      quote: "The Donkey Trail is a masterpiece of natural architecture. Each day reveals new wonders—from the dramatic mountain passes to the gentle valleys. It's a trail that stays with you long after you've returned home.",
+      quote:
+        "The Donkey Trail is a masterpiece of natural architecture. Each day reveals new wonders—from the dramatic mountain passes to the gentle valleys. It's a trail that stays with you long after you've returned home.",
       author: {
         name: "David Johannsen",
         location: "Oslo, Norway",
@@ -578,7 +623,8 @@ const DEFAULT_TESTIMONIALS = {
       rating: 5,
     },
     {
-      quote: "This trail challenged me in ways I never expected, but the sense of accomplishment and the breathtaking views made every step worth it. The guides were knowledgeable and the accommodations were surprisingly comfortable.",
+      quote:
+        "This trail challenged me in ways I never expected, but the sense of accomplishment and the breathtaking views made every step worth it. The guides were knowledgeable and the accommodations were surprisingly comfortable.",
       author: {
         name: "Sarah Mitchell",
         location: "Melbourne, Australia",
@@ -587,7 +633,8 @@ const DEFAULT_TESTIMONIALS = {
       rating: 5,
     },
     {
-      quote: "Walking the Donkey Trail was like stepping back in time. The history, the nature, and the people we met along the way created an unforgettable experience. Highly recommend for anyone seeking adventure.",
+      quote:
+        "Walking the Donkey Trail was like stepping back in time. The history, the nature, and the people we met along the way created an unforgettable experience. Highly recommend for anyone seeking adventure.",
       author: {
         name: "James Thompson",
         location: "London, UK",
@@ -596,7 +643,8 @@ const DEFAULT_TESTIMONIALS = {
       rating: 5,
     },
     {
-      quote: "The Swartberg Mountains are truly spectacular, and this trail showcases them perfectly. From sunrise to sunset, every moment was magical. This is a journey I'll treasure forever.",
+      quote:
+        "The Swartberg Mountains are truly spectacular, and this trail showcases them perfectly. From sunrise to sunset, every moment was magical. This is a journey I'll treasure forever.",
       author: {
         name: "Maria Santos",
         location: "São Paulo, Brazil",
@@ -605,7 +653,8 @@ const DEFAULT_TESTIMONIALS = {
       rating: 5,
     },
     {
-      quote: "As someone who has hiked trails around the world, the Donkey Trail stands out for its unique combination of natural beauty, historical significance, and genuine hospitality. An absolute must-do.",
+      quote:
+        "As someone who has hiked trails around the world, the Donkey Trail stands out for its unique combination of natural beauty, historical significance, and genuine hospitality. An absolute must-do.",
       author: {
         name: "Robert Chen",
         location: "Singapore",
@@ -616,7 +665,8 @@ const DEFAULT_TESTIMONIALS = {
   ],
   shareStory: {
     title: "Share Your Story",
-    description: "Have you experienced the magic of the Donkey Trail? We'd love to hear about your journey and share your story with future adventurers.",
+    description:
+      "Have you experienced the magic of the Donkey Trail? We'd love to hear about your journey and share your story with future adventurers.",
     buttonText: "Share Your Experience",
     buttonLink: "https://www.facebook.com/thedonkeytrail",
   },
@@ -625,7 +675,8 @@ const DEFAULT_TESTIMONIALS = {
 const DEFAULT_CONTACT_FORM = {
   title: "Plan Your",
   highlightedText: "Adventure",
-  description: "Ready to experience the legendary Donkey Trail? Get in touch with our team for booking assistance, trail information, and expert advice to make your hike unforgettable.",
+  description:
+    "Ready to experience the legendary Donkey Trail? Get in touch with our team for booking assistance, trail information, and expert advice to make your hike unforgettable.",
   contactInfo: {
     title: "Get In Touch",
     items: [
@@ -704,7 +755,8 @@ const DEFAULT_CONTACT_FORM = {
     ],
     helpInfo: {
       title: "Need Help?",
-      description: "Contact us directly for availability confirmation and booking assistance.",
+      description:
+        "Contact us directly for availability confirmation and booking assistance.",
       phone: "073 593 4007",
       email: "info@donkeytrail.com",
     },
@@ -744,14 +796,22 @@ const DEFAULT_GALLERY = {
 };
 
 // Helper function to merge Sanity data with defaults
-function mergeWithDefaults<T>(sanityData: T | null | undefined, defaultData: T): T {
+function mergeWithDefaults<T>(
+  sanityData: T | null | undefined,
+  defaultData: T
+): T {
   if (!sanityData) return defaultData;
-  
+
   // If it's an object, merge recursively
-  if (typeof sanityData === 'object' && typeof defaultData === 'object' && !Array.isArray(sanityData) && !Array.isArray(defaultData)) {
+  if (
+    typeof sanityData === "object" &&
+    typeof defaultData === "object" &&
+    !Array.isArray(sanityData) &&
+    !Array.isArray(defaultData)
+  ) {
     return { ...defaultData, ...sanityData } as T;
   }
-  
+
   return sanityData;
 }
 
@@ -770,32 +830,38 @@ export default async function Home() {
 
   try {
     const data = await sanityClient.fetch(HOMEPAGE_QUERY);
-    console.log("Fetched homepage data:", JSON.stringify(data, null, 2));
-    console.log("Draft mode enabled:", isEnabled);
-    
+
     // Merge Sanity data with defaults, ensuring all fields are present
     if (data?.hero) {
       heroData = {
         ...DEFAULT_HERO_DATA,
         ...data.hero,
         trailStats: data.hero.trailStats || DEFAULT_HERO_DATA.trailStats,
-        primaryButton: data.hero.primaryButton || DEFAULT_HERO_DATA.primaryButton,
-        secondaryButton: data.hero.secondaryButton || DEFAULT_HERO_DATA.secondaryButton,
+        primaryButton:
+          data.hero.primaryButton || DEFAULT_HERO_DATA.primaryButton,
+        secondaryButton:
+          data.hero.secondaryButton || DEFAULT_HERO_DATA.secondaryButton,
       };
     }
 
     if (data?.trailInfo) {
       trailInfoData = {
-        aboutSection: data.trailInfo.aboutSection || DEFAULT_TRAIL_INFO.aboutSection,
-        trailHighlights: data.trailInfo.trailHighlights && data.trailInfo.trailHighlights.length > 0 
-          ? data.trailInfo.trailHighlights 
-          : DEFAULT_TRAIL_INFO.trailHighlights,
-        historicalNote: data.trailInfo.historicalNote || DEFAULT_TRAIL_INFO.historicalNote,
+        aboutSection:
+          data.trailInfo.aboutSection || DEFAULT_TRAIL_INFO.aboutSection,
+        trailHighlights:
+          data.trailInfo.trailHighlights &&
+          data.trailInfo.trailHighlights.length > 0
+            ? data.trailInfo.trailHighlights
+            : DEFAULT_TRAIL_INFO.trailHighlights,
+        historicalNote:
+          data.trailInfo.historicalNote || DEFAULT_TRAIL_INFO.historicalNote,
         carousel: {
           // Use Sanity images if they exist (any number), otherwise use default placeholder
-          images: data.trailInfo.carousel?.images && data.trailInfo.carousel.images.length > 0
-            ? data.trailInfo.carousel.images  // Use whatever number of images from Sanity
-            : DEFAULT_TRAIL_INFO.carousel.images,  // Only use default if Sanity has no images
+          images:
+            data.trailInfo.carousel?.images &&
+            data.trailInfo.carousel.images.length > 0
+              ? data.trailInfo.carousel.images // Use whatever number of images from Sanity
+              : DEFAULT_TRAIL_INFO.carousel.images, // Only use default if Sanity has no images
         },
       };
     }
@@ -805,12 +871,15 @@ export default async function Home() {
         ...DEFAULT_INTERACTIVE_MAP,
         ...data.interactiveMap,
         mapUrl: data.interactiveMap.mapUrl || DEFAULT_INTERACTIVE_MAP.mapUrl,
-        legend: data.interactiveMap.legend && data.interactiveMap.legend.length > 0
-          ? data.interactiveMap.legend
-          : DEFAULT_INTERACTIVE_MAP.legend,
-        trailPoints: data.interactiveMap.trailPoints && data.interactiveMap.trailPoints.length > 0
-          ? data.interactiveMap.trailPoints
-          : DEFAULT_INTERACTIVE_MAP.trailPoints,
+        legend:
+          data.interactiveMap.legend && data.interactiveMap.legend.length > 0
+            ? data.interactiveMap.legend
+            : DEFAULT_INTERACTIVE_MAP.legend,
+        trailPoints:
+          data.interactiveMap.trailPoints &&
+          data.interactiveMap.trailPoints.length > 0
+            ? data.interactiveMap.trailPoints
+            : DEFAULT_INTERACTIVE_MAP.trailPoints,
       };
     }
 
@@ -818,13 +887,19 @@ export default async function Home() {
       practicalInfoData = {
         ...DEFAULT_PRACTICAL_INFO,
         ...data.practicalInfo,
-        tabs: data.practicalInfo.tabs && data.practicalInfo.tabs.length > 0
-          ? data.practicalInfo.tabs
-          : DEFAULT_PRACTICAL_INFO.tabs,
-        bookingPermits: data.practicalInfo.bookingPermits || DEFAULT_PRACTICAL_INFO.bookingPermits,
-        costsFees: data.practicalInfo.costsFees || DEFAULT_PRACTICAL_INFO.costsFees,
-        packingList: data.practicalInfo.packingList || DEFAULT_PRACTICAL_INFO.packingList,
-        safetyTips: data.practicalInfo.safetyTips || DEFAULT_PRACTICAL_INFO.safetyTips,
+        tabs:
+          data.practicalInfo.tabs && data.practicalInfo.tabs.length > 0
+            ? data.practicalInfo.tabs
+            : DEFAULT_PRACTICAL_INFO.tabs,
+        bookingPermits:
+          data.practicalInfo.bookingPermits ||
+          DEFAULT_PRACTICAL_INFO.bookingPermits,
+        costsFees:
+          data.practicalInfo.costsFees || DEFAULT_PRACTICAL_INFO.costsFees,
+        packingList:
+          data.practicalInfo.packingList || DEFAULT_PRACTICAL_INFO.packingList,
+        safetyTips:
+          data.practicalInfo.safetyTips || DEFAULT_PRACTICAL_INFO.safetyTips,
       };
     }
 
@@ -832,12 +907,14 @@ export default async function Home() {
       galleryData = {
         ...DEFAULT_GALLERY,
         ...data.gallery,
-        filters: data.gallery.filters && data.gallery.filters.length > 0
-          ? data.gallery.filters
-          : DEFAULT_GALLERY.filters,
-        items: data.gallery.items && data.gallery.items.length > 0
-          ? data.gallery.items
-          : DEFAULT_GALLERY.items,
+        filters:
+          data.gallery.filters && data.gallery.filters.length > 0
+            ? data.gallery.filters
+            : DEFAULT_GALLERY.filters,
+        items:
+          data.gallery.items && data.gallery.items.length > 0
+            ? data.gallery.items
+            : DEFAULT_GALLERY.items,
       };
     }
 
@@ -845,10 +922,13 @@ export default async function Home() {
       testimonialsData = {
         ...DEFAULT_TESTIMONIALS,
         ...data.testimonials,
-        testimonials: data.testimonials.testimonials && data.testimonials.testimonials.length > 0
-          ? data.testimonials.testimonials
-          : DEFAULT_TESTIMONIALS.testimonials,
-        shareStory: data.testimonials.shareStory || DEFAULT_TESTIMONIALS.shareStory,
+        testimonials:
+          data.testimonials.testimonials &&
+          data.testimonials.testimonials.length > 0
+            ? data.testimonials.testimonials
+            : DEFAULT_TESTIMONIALS.testimonials,
+        shareStory:
+          data.testimonials.shareStory || DEFAULT_TESTIMONIALS.shareStory,
       };
     }
 
@@ -872,31 +952,31 @@ export default async function Home() {
       contactFormData = {
         ...DEFAULT_CONTACT_FORM,
         ...data.contactForm,
-        contactInfo: data.contactForm.contactInfo || DEFAULT_CONTACT_FORM.contactInfo,
-        quickActions: data.contactForm.quickActions || DEFAULT_CONTACT_FORM.quickActions,
+        contactInfo:
+          data.contactForm.contactInfo || DEFAULT_CONTACT_FORM.contactInfo,
+        quickActions:
+          data.contactForm.quickActions || DEFAULT_CONTACT_FORM.quickActions,
         form: data.contactForm.form || DEFAULT_CONTACT_FORM.form,
         calendar: {
           availableDates:
-            data.contactForm.calendar?.availableDates && data.contactForm.calendar.availableDates.length > 0
+            data.contactForm.calendar?.availableDates &&
+            data.contactForm.calendar.availableDates.length > 0
               ? formatDates(data.contactForm.calendar.availableDates)
               : DEFAULT_CONTACT_FORM.calendar.availableDates,
           fullyBookedDates:
-            data.contactForm.calendar?.fullyBookedDates && data.contactForm.calendar.fullyBookedDates.length > 0
+            data.contactForm.calendar?.fullyBookedDates &&
+            data.contactForm.calendar.fullyBookedDates.length > 0
               ? formatDates(data.contactForm.calendar.fullyBookedDates)
               : DEFAULT_CONTACT_FORM.calendar.fullyBookedDates,
-          helpInfo: data.contactForm.calendar?.helpInfo || DEFAULT_CONTACT_FORM.calendar.helpInfo,
+          helpInfo:
+            data.contactForm.calendar?.helpInfo ||
+            DEFAULT_CONTACT_FORM.calendar.helpInfo,
         },
       };
     }
 
     // Footer is now fetched separately in layout.tsx
-
-    console.log("Hero data being used:", JSON.stringify(heroData, null, 2));
-    console.log("Trail Info data being used:", JSON.stringify(trailInfoData, null, 2));
-  } catch (error) {
-    console.error("Error fetching homepage data:", error);
-    console.log("Using default/mock data due to error");
-  }
+  } catch (error) {}
 
   return (
     <>
@@ -911,4 +991,3 @@ export default async function Home() {
     </>
   );
 }
-

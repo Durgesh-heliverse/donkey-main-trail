@@ -74,6 +74,26 @@ const FOOTER_QUERY = `*[_type == "footer"][0]{
       text,
       href
     }
+  },
+  termsAndConditions {
+    introduction,
+    lastUpdated,
+    sections[] {
+      title,
+      icon,
+      items
+    },
+    questionsSection {
+      title,
+      description,
+      phone,
+      email,
+      address
+    },
+    agreementSection {
+      title,
+      text
+    }
   }
 }`;
 
@@ -147,6 +167,95 @@ const DEFAULT_FOOTER = {
       href: "#",
     },
   },
+  termsAndConditions: {
+    introduction:
+      "Please read these terms and conditions carefully before booking your Donkey Trail experience. By making a booking, you agree to be bound by these terms.",
+    lastUpdated: "January 2025",
+    sections: [
+      {
+        title: "Booking & Reservations",
+        icon: "calendar",
+        items: [
+          "All bookings must be made in advance through our authorized booking channels.",
+          "A deposit may be required to secure your reservation.",
+          "Bookings are subject to availability and weather conditions.",
+          "We reserve the right to cancel or reschedule trips due to safety concerns or adverse weather conditions.",
+          "Alternative dates will be offered in case of cancellations due to circumstances beyond our control.",
+        ],
+      },
+      {
+        title: "Payment Terms",
+        icon: "creditCard",
+        items: [
+          "Full payment is required before the commencement of the trail.",
+          "Payments can be made via bank transfer, credit card, or other approved methods.",
+          "All prices are quoted in South African Rand (ZAR) and are subject to change.",
+          "Additional costs such as drinks and personal items are not included in the trail fee.",
+          "Refunds will be processed according to our cancellation policy.",
+        ],
+      },
+      {
+        title: "Cancellation Policy",
+        icon: "alertTriangle",
+        items: [
+          "Cancellations made more than 30 days before the trail date: Full refund minus administrative fee.",
+          "Cancellations made 15-30 days before: 50% refund of total amount paid.",
+          "Cancellations made less than 15 days before: No refund unless exceptional circumstances apply.",
+          "Weather-related cancellations initiated by us will result in a full refund or alternative date.",
+          "Medical emergencies may be considered for partial refunds with appropriate documentation.",
+        ],
+      },
+      {
+        title: "Safety & Liability",
+        icon: "shield",
+        items: [
+          "Participants engage in hiking activities at their own risk.",
+          "All participants must be in good physical condition and able to complete the trail requirements.",
+          "Medical conditions must be disclosed during booking.",
+          "Participants must follow all safety instructions provided by guides.",
+          "We recommend comprehensive travel and medical insurance for all participants.",
+          "The operator is not liable for personal injury, loss, or damage to personal property.",
+          "Emergency evacuation costs are the responsibility of the participant.",
+        ],
+      },
+      {
+        title: "Participant Conduct",
+        icon: "users",
+        items: [
+          "Participants must respect the natural environment and leave no trace.",
+          "Alcohol and illegal substances are strictly prohibited on the trail.",
+          "Participants must follow the guidance of trail guides at all times.",
+          "Disruptive behavior may result in removal from the trail without refund.",
+          "Respect for local communities and cultural sites is mandatory.",
+          "Photography of other participants requires consent.",
+        ],
+      },
+      {
+        title: "Equipment & Personal Items",
+        icon: "mapPin",
+        items: [
+          "Participants are responsible for bringing appropriate personal hiking equipment.",
+          "A detailed packing list will be provided upon booking confirmation.",
+          "The operator is not responsible for lost, stolen, or damaged personal items.",
+          "Basic safety equipment and first aid supplies are provided by the operator.",
+          "Participants may be refused entry if they do not have essential safety equipment.",
+        ],
+      },
+    ],
+    questionsSection: {
+      title: "Questions About These Terms?",
+      description:
+        "If you have any questions about these terms and conditions, please don't hesitate to contact us:",
+      phone: "073 593 4007",
+      email: "info@donkeytrail.com",
+      address:
+        "Living Waters Mountain Estate, Groenfontein, Calitzdorp, Western Cape South Africa",
+    },
+    agreementSection: {
+      title: "Agreement to Terms",
+      text: "By booking and participating in the Donkey Trail experience, you acknowledge that you have read, understood, and agree to be bound by these terms and conditions. These terms constitute a legally binding agreement between you and the Donkey Trail operators.",
+    },
+  },
 };
 
 export default async function RootLayout({
@@ -157,7 +266,7 @@ export default async function RootLayout({
   // Check if we're in the Studio route
   const headersList = await headers();
   const isStudioRoute = headersList.get("x-is-studio-route") === "true";
-  
+
   // Check if we're in draft mode (preview)
   const { isEnabled: isDraftMode } = await draftMode();
   const sanityClient = isDraftMode ? previewClient : client;
@@ -165,35 +274,37 @@ export default async function RootLayout({
   // Only fetch header and footer if not in Studio route
   let headerData = null;
   let footerData = DEFAULT_FOOTER;
-  
+
   if (!isStudioRoute) {
     try {
       const [headerResult, footerResult] = await Promise.all([
         sanityClient.fetch(HEADER_QUERY).catch(() => null),
         sanityClient.fetch(FOOTER_QUERY).catch(() => null),
-  ]);
-      
+      ]);
+
       headerData = headerResult;
-      
+
       if (footerResult) {
         footerData = {
           ...DEFAULT_FOOTER,
           ...footerResult,
-          socialMedia: footerResult.socialMedia && footerResult.socialMedia.length > 0
-            ? footerResult.socialMedia
-            : DEFAULT_FOOTER.socialMedia,
-          trailInformation: footerResult.trailInformation || DEFAULT_FOOTER.trailInformation,
+          socialMedia:
+            footerResult.socialMedia && footerResult.socialMedia.length > 0
+              ? footerResult.socialMedia
+              : DEFAULT_FOOTER.socialMedia,
+          trailInformation:
+            footerResult.trailInformation || DEFAULT_FOOTER.trailInformation,
           resources: footerResult.resources || DEFAULT_FOOTER.resources,
           contactInfo: footerResult.contactInfo || DEFAULT_FOOTER.contactInfo,
           quickFacts: footerResult.quickFacts || DEFAULT_FOOTER.quickFacts,
           copyright: footerResult.copyright || DEFAULT_FOOTER.copyright,
+          termsAndConditions:
+            footerResult.termsAndConditions ||
+            DEFAULT_FOOTER.termsAndConditions,
         };
-        console.log("Footer data from Sanity:", JSON.stringify(footerData, null, 2));
       } else {
-        console.log("No footer data found in Sanity, using defaults");
       }
     } catch (error) {
-      console.error("Error fetching header/footer data:", error);
     }
   }
 

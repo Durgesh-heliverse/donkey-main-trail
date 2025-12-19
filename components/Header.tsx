@@ -41,9 +41,11 @@ export default function Header({ data }: HeaderProps) {
   }, []);
 
   return (
-    <header className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? "bg-[#FFFFFF] shadow-md" : "bg-transparent"
-    }`} style={{ top: 'var(--preview-banner-height, 0px)' }}>
+    <header
+      className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
+        isMenuOpen ? "bg-white" : "bg-transparent"
+      }`}
+    >
       <nav className="w-full px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-20 max-w-7xl mx-auto">
           {/* Logo */}
@@ -59,9 +61,7 @@ export default function Header({ data }: HeaderProps) {
                 />
               </div>
             ) : (
-              <span className={`text-lg font-bold transition-colors ${
-                isScrolled ? "text-gray-900" : "text-white"
-              }`}>
+              <span className="text-lg font-bold transition-colors text-gray-900">
                 Donkey Trail
               </span>
             )}
@@ -77,16 +77,20 @@ export default function Header({ data }: HeaderProps) {
                     onMouseEnter={() => setIsRaceDropdownOpen(true)}
                     onMouseLeave={() => setIsRaceDropdownOpen(false)}
                   >
-                    <span className={`transition-colors ${
-                      isScrolled 
-                        ? "text-gray-900 hover:text-accent-orange" 
-                        : "text-white hover:text-accent-orange"
-                    }`}>
+                    <span
+                      className={`transition-colors ${
+                        isScrolled
+                          ? "text-gray-900 hover:text-accent-orange"
+                          : "text-white hover:text-accent-orange"
+                      }`}
+                    >
                       {item.name}
                     </span>
-                    <ChevronDown className={`ml-1 h-4 w-4 transition-colors ${
-                      isScrolled ? "text-gray-900" : "text-white"
-                    }`} />
+                    <ChevronDown
+                      className={`ml-1 h-4 w-4 transition-colors ${
+                        isScrolled ? "text-gray-900" : "text-white"
+                      }`}
+                    />
                     {isRaceDropdownOpen && (
                       <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2">
                         {raceDropdownItems.map((raceItem, raceIndex) => (
@@ -105,8 +109,8 @@ export default function Header({ data }: HeaderProps) {
                   <Link
                     href={item.href || "#"}
                     className={`transition-colors ${
-                      isScrolled 
-                        ? "text-gray-900 hover:text-accent-orange" 
+                      isScrolled
+                        ? "text-gray-900 hover:text-accent-orange"
                         : "text-white hover:text-accent-orange"
                     }`}
                   >
@@ -119,17 +123,15 @@ export default function Header({ data }: HeaderProps) {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2"
+            className="lg:hidden py-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X className={`h-6 w-6 transition-colors ${
-                isScrolled ? "text-gray-900" : "text-white"
-              }`} />
+              <X className="h-6 w-6 transition-colors text-grey-900" />
             ) : (
               <Menu className={`h-6 w-6 transition-colors ${
-                isScrolled ? "text-gray-900" : "text-white"
+                isScrolled ? "text-grey-900" : "text-white"
               }`} />
             )}
           </button>
@@ -137,22 +139,24 @@ export default function Header({ data }: HeaderProps) {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className={`lg:hidden py-4 border-t ${
-            isScrolled ? "border-gray-200" : "border-white/20"
-          }`}>
+          <div
+            className={`lg:hidden border-t ${
+              isScrolled ? "border-gray-200" : "border-white/20"
+            }`}
+          >
             {navigation?.map((item, index) => (
               <div key={index} className="py-2">
                 {item.hasDropdown && raceDropdownItems ? (
                   <div>
                     <div className="flex items-center justify-between py-2">
-                      <span className={`font-medium transition-colors ${
-                        isScrolled ? "text-gray-900" : "text-white"
-                      }`}>
+                      <span className="font-medium transition-colors text-gray-900 ">
                         {item.name}
                       </span>
-                      <ChevronDown className={`h-4 w-4 transition-colors ${
-                        isScrolled ? "text-gray-900" : "text-white"
-                      }`} />
+                      <ChevronDown
+                        className={`h-4 w-4 transition-colors ${
+                          isScrolled ? "text-gray-900" : "text-grey-900"
+                        }`}
+                      />
                     </div>
                     <div className="pl-4">
                       {raceDropdownItems.map((raceItem, raceIndex) => (
@@ -160,8 +164,8 @@ export default function Header({ data }: HeaderProps) {
                           key={raceIndex}
                           href={raceItem.href || "#"}
                           className={`block py-2 transition-colors ${
-                            isScrolled 
-                              ? "text-gray-700 hover:text-accent-orange" 
+                            isScrolled
+                              ? "text-gray-700 hover:text-accent-orange hover:bg-orange-50"
                               : "text-white/80 hover:text-accent-orange"
                           }`}
                           onClick={() => setIsMenuOpen(false)}
@@ -174,11 +178,7 @@ export default function Header({ data }: HeaderProps) {
                 ) : (
                   <Link
                     href={item.href || "#"}
-                    className={`block py-2 transition-colors ${
-                      isScrolled 
-                        ? "text-gray-900 hover:text-accent-orange" 
-                        : "text-white hover:text-accent-orange"
-                    }`}
+                    className="block px-4 py-3 -mx-2 transition-colors text-grey-900 hover:text-accent-orange hover:bg-orange-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
@@ -192,4 +192,3 @@ export default function Header({ data }: HeaderProps) {
     </header>
   );
 }
-

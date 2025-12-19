@@ -1,7 +1,18 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { Map, Clock, TrendingUp, Users, Award, Camera, Heart, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Map,
+  Clock,
+  TrendingUp,
+  Users,
+  Award,
+  Camera,
+  Heart,
+  Quote,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { urlFor } from "@/sanity/lib/image";
 
 interface TrailInfoProps {
@@ -46,7 +57,8 @@ const DEFAULT_DATA = {
   aboutSection: {
     title: "About the",
     highlightedText: "Donkey Trail",
-    description: "Long ago, before modern roads, the daring 'Donkey Trail' over the majestic Swartberg Mountain connected Calitzdorp to Die Hel—the sole lifeline linking this remote region to the outside world. Join us on a memorable hike along this historic route, and step back in time to experience the rugged beauty and storied past of the trail that once carried hope and connection through challenging terrains.",
+    description:
+      "Long ago, before modern roads, the daring 'Donkey Trail' over the majestic Swartberg Mountain connected Calitzdorp to Die Hel—the sole lifeline linking this remote region to the outside world. Join us on a memorable hike along this historic route, and step back in time to experience the rugged beauty and storied past of the trail that once carried hope and connection through challenging terrains.",
     stats: [
       { icon: "map", value: "77km", label: "Total Distance" },
       { icon: "clock", value: "5 Days", label: "Duration" },
@@ -58,27 +70,32 @@ const DEFAULT_DATA = {
     {
       icon: "award",
       title: "UNESCO World Heritage Site",
-      description: "Experience walking through the breathtaking Swartberg Mountains, recognized globally for their outstanding natural beauty and geological significance.",
+      description:
+        "Experience walking through the breathtaking Swartberg Mountains, recognized globally for their outstanding natural beauty and geological significance.",
     },
     {
       icon: "clock",
       title: "Historical Gamkaskloof",
-      description: "Explore the legendary 'Die Hel,' a remote and rugged area rich in history and untouched wilderness, the Donkey Trail was once a vital trade route for this community.",
+      description:
+        "Explore the legendary 'Die Hel,' a remote and rugged area rich in history and untouched wilderness, the Donkey Trail was once a vital trade route for this community.",
     },
     {
       icon: "camera",
       title: "Scenic Bosch Luys Kloof",
-      description: "Conclude your journey at the stunning Bosch Luys Kloof, a pristine nature reserve renowned for its dramatic cliffs, clear streams and landscapes.",
+      description:
+        "Conclude your journey at the stunning Bosch Luys Kloof, a pristine nature reserve renowned for its dramatic cliffs, clear streams and landscapes.",
     },
     {
       icon: "heart",
       title: "Cultural and Natural Heritage",
-      description: "Traverse a trail steeped in history, from ancient pathways used by early explorers to vibrant flora and fauna thriving in this protected landscape. Along the way, experience the warmth of Karoo hospitality, and uncover the fascinating cultures that make this region truly special while supporting local communities.",
+      description:
+        "Traverse a trail steeped in history, from ancient pathways used by early explorers to vibrant flora and fauna thriving in this protected landscape. Along the way, experience the warmth of Karoo hospitality, and uncover the fascinating cultures that make this region truly special while supporting local communities.",
     },
   ],
   historicalNote: {
     title: "Historical Note",
-    content: "Between the years 1830 and 1962 the inhabitants of the isolated valley of Gamkaskloof (Die Hel) had no road access into the valley. Access was only possible via a few footpaths which crossed the mountains and connected the valley to Calitzdorp and Prince Albert. These paths were used for transporting their produce from the valley to the markets and for bringing supplies to the area. Donkeys were utilized to carry the items from the valley to Calitzdorp via the Wyenek route.",
+    content:
+      "Between the years 1830 and 1962 the inhabitants of the isolated valley of Gamkaskloof (Die Hel) had no road access into the valley. Access was only possible via a few footpaths which crossed the mountains and connected the valley to Calitzdorp and Prince Albert. These paths were used for transporting their produce from the valley to the markets and for bringing supplies to the area. Donkeys were utilized to carry the items from the valley to Calitzdorp via the Wyenek route.",
   },
   carousel: {
     images: [
@@ -90,7 +107,8 @@ const DEFAULT_DATA = {
           icon: "award",
           title: "UNESCO World Heritage Site",
           subtitle: "Cape Floral Region",
-          description: "The Swartberg Mountains were declared part of the Cape Floral Region World Heritage Site in June 2004. This declaration was made by UNESCO in recognition of the region's exceptional biodiversity and the unique fynbos vegetation found there.",
+          description:
+            "The Swartberg Mountains were declared part of the Cape Floral Region World Heritage Site in June 2004. This declaration was made by UNESCO in recognition of the region's exceptional biodiversity and the unique fynbos vegetation found there.",
         },
       },
     ],
@@ -99,12 +117,13 @@ const DEFAULT_DATA = {
 
 export default function TrailInfo({ data }: TrailInfoProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  
+
   // Merge with defaults to ensure all data is present
   const aboutSection = data?.aboutSection || DEFAULT_DATA.aboutSection;
-  const trailHighlights = data?.trailHighlights && data.trailHighlights.length > 0 
-    ? data.trailHighlights 
-    : DEFAULT_DATA.trailHighlights;
+  const trailHighlights =
+    data?.trailHighlights && data.trailHighlights.length > 0
+      ? data.trailHighlights
+      : DEFAULT_DATA.trailHighlights;
   const historicalNote = data?.historicalNote || DEFAULT_DATA.historicalNote;
   const carousel = data?.carousel || DEFAULT_DATA.carousel;
 
@@ -121,9 +140,10 @@ export default function TrailInfo({ data }: TrailInfoProps) {
 
   // Use Sanity images if available, otherwise use default placeholder
   // This ensures the carousel shows exactly the number of images uploaded in Sanity
-  const carouselImages = carousel?.images && carousel.images.length > 0 
-    ? carousel.images 
-    : DEFAULT_DATA.carousel.images;
+  const carouselImages =
+    carousel?.images && carousel.images.length > 0
+      ? carousel.images
+      : DEFAULT_DATA.carousel.images;
 
   const nextImage = () => {
     if (carouselImages.length > 0) {
@@ -133,7 +153,9 @@ export default function TrailInfo({ data }: TrailInfoProps) {
 
   const prevImage = () => {
     if (carouselImages.length > 0) {
-      setCurrentImageIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+      setCurrentImageIndex(
+        (prev) => (prev - 1 + carouselImages.length) % carouselImages.length
+      );
     }
   };
 
@@ -144,9 +166,11 @@ export default function TrailInfo({ data }: TrailInfoProps) {
   };
 
   // Reset index if it's out of bounds
-  const safeIndex = currentImageIndex >= carouselImages.length ? 0 : currentImageIndex;
+  const safeIndex =
+    currentImageIndex >= carouselImages.length ? 0 : currentImageIndex;
   const currentImage = carouselImages[safeIndex];
-  const currentCard = currentImage?.card || DEFAULT_DATA.carousel.images[0]?.card;
+  const currentCard =
+    currentImage?.card || DEFAULT_DATA.carousel.images[0]?.card;
 
   return (
     <section id="trail-info" className="py-20 bg-white">
@@ -157,7 +181,9 @@ export default function TrailInfo({ data }: TrailInfoProps) {
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 {aboutSection.title}{" "}
-                <span className="text-accent-orange">{aboutSection.highlightedText}</span>
+                <span className="text-accent-orange">
+                  {aboutSection.highlightedText}
+                </span>
               </h2>
               <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
                 {aboutSection.description}
@@ -168,11 +194,18 @@ export default function TrailInfo({ data }: TrailInfoProps) {
             {aboutSection.stats && aboutSection.stats.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
                 {aboutSection.stats.map((stat, index) => (
-                  <div key={index} className="bg-orange-50 rounded-2xl p-6 text-center">
+                  <div
+                    key={index}
+                    className="bg-orange-50 rounded-2xl p-6 text-center"
+                  >
                     <div className="inline-flex items-center justify-center w-12 h-12 bg-orange-100 rounded-full mb-4">
-                      {iconMap[stat.icon] || <Map className="h-6 w-6 text-accent-orange" />}
+                      {iconMap[stat.icon] || (
+                        <Map className="h-6 w-6 text-accent-orange" />
+                      )}
                     </div>
-                    <div className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
+                    <div className="text-2xl font-bold text-gray-900 mb-1">
+                      {stat.value}
+                    </div>
                     <div className="text-sm text-gray-600">{stat.label}</div>
                   </div>
                 ))}
@@ -185,16 +218,24 @@ export default function TrailInfo({ data }: TrailInfoProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Trail Highlights - Always Show */}
           <div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-8">Trail Highlights</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-8">
+              Trail Highlights
+            </h3>
             <div className="space-y-6">
               {trailHighlights.map((highlight, index) => (
                 <div key={index} className="flex items-start space-x-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                    {iconMap[highlight.icon] || <Award className="h-6 w-6 text-accent-orange" />}
+                    {iconMap[highlight.icon] || (
+                      <Award className="h-6 w-6 text-accent-orange" />
+                    )}
                   </div>
                   <div>
-                    <h4 className="text-xl font-semibold text-gray-900 mb-2">{highlight.title}</h4>
-                    <p className="text-gray-600 leading-relaxed">{highlight.description}</p>
+                    <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                      {highlight.title}
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      {highlight.description}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -207,7 +248,9 @@ export default function TrailInfo({ data }: TrailInfoProps) {
                   <Quote className="h-6 w-6 text-accent-orange mr-3" />
                   {historicalNote.title}
                 </h4>
-                <p className="text-gray-800 text-lg leading-relaxed italic">{historicalNote.content}</p>
+                <p className="text-gray-800 text-lg leading-relaxed italic">
+                  {historicalNote.content}
+                </p>
               </div>
             )}
           </div>
@@ -237,17 +280,17 @@ export default function TrailInfo({ data }: TrailInfoProps) {
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 z-10"
                   >
                     <ChevronLeft className="h-6 w-6" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 z-10"
                   >
                     <ChevronRight className="h-6 w-6" />
                   </button>
-                  <div className="absolute top-4 right-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  <div className="absolute top-4 right-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium z-10">
                     {safeIndex + 1} / {carouselImages.length}
                   </div>
                 </>
@@ -281,14 +324,20 @@ export default function TrailInfo({ data }: TrailInfoProps) {
                     </div>
                   )}
                   <div>
-                    <h4 className="font-bold text-gray-900">{currentCard.title}</h4>
+                    <h4 className="font-bold text-gray-900">
+                      {currentCard.title}
+                    </h4>
                     {currentCard.subtitle && (
-                      <p className="text-sm text-gray-600">{currentCard.subtitle}</p>
+                      <p className="text-sm text-gray-600">
+                        {currentCard.subtitle}
+                      </p>
                     )}
                   </div>
                 </div>
                 {currentCard.description && (
-                  <p className="text-sm text-gray-600">{currentCard.description}</p>
+                  <p className="text-sm text-gray-600">
+                    {currentCard.description}
+                  </p>
                 )}
               </div>
             )}
@@ -298,4 +347,3 @@ export default function TrailInfo({ data }: TrailInfoProps) {
     </section>
   );
 }
-

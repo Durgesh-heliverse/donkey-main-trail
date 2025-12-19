@@ -46,14 +46,11 @@ export default function Hero({ data }: HeroProps) {
     if (backgroundImage?.asset) {
       try {
         const url = urlFor(backgroundImage).url();
-        console.log("Background image URL:", url);
         return url;
       } catch (error) {
-        console.error("Error generating image URL:", error);
         return null;
       }
     }
-    console.log("No background image found in data:", backgroundImage);
     return null;
   };
 

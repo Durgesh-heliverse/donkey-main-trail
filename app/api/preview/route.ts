@@ -27,7 +27,6 @@ export async function GET(request: Request) {
 
   // Security: Check if we're in production and secret is still default
   if (process.env.NODE_ENV === 'production' && PREVIEW_SECRET === 'preview-secret-change-in-production') {
-    console.error('SECURITY WARNING: Using default preview secret in production!');
     return new Response('Preview not configured', { status: 403 })
   }
 
