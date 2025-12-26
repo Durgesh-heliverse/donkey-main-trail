@@ -43,7 +43,9 @@ export default function Header({ data }: HeaderProps) {
   return (
     <header
       className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
-        isMenuOpen ? "bg-white" : "bg-transparent"
+        isScrolled || isMenuOpen
+          ? "bg-white/95 backdrop-blur-md shadow-lg"
+          : "bg-transparent"
       }`}
     >
       <nav className="w-full px-6 sm:px-8 lg:px-12">
@@ -130,9 +132,11 @@ export default function Header({ data }: HeaderProps) {
             {isMenuOpen ? (
               <X className="h-6 w-6 transition-colors text-grey-900" />
             ) : (
-              <Menu className={`h-6 w-6 transition-colors ${
-                isScrolled ? "text-grey-900" : "text-white"
-              }`} />
+              <Menu
+                className={`h-6 w-6 transition-colors ${
+                  isScrolled ? "text-grey-900" : "text-white"
+                }`}
+              />
             )}
           </button>
         </div>
