@@ -180,11 +180,11 @@ export default function Hero({ data }: HeroProps) {
           )}
 
           {/* Call to Action Buttons - Exact matching */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full sm:w-auto">
             {/* Primary Button - Orange */}
             {primaryButton && (
-              <Link href={primaryButton.link || "#"}>
-                <button className=" cursor-pointer bg-accent-darkOrange hover:bg-accent-darkOrange/90 text-white px-7 py-3 rounded-full font-semibold text-[15px] sm:text-[16px] transition-all duration-200 transform hover:scale-105 hover:shadow-xl flex items-center gap-2">
+              <Link href={primaryButton.link || "#"} className="w-full sm:w-auto">
+                <button className="cursor-pointer bg-accent-darkOrange hover:bg-accent-darkOrange/90 text-white px-7 py-3 rounded-full font-semibold text-[15px] sm:text-[16px] transition-all duration-200 transform hover:scale-105 hover:shadow-xl flex items-center gap-2 w-full sm:w-auto justify-center">
                   {primaryButton.text}
                   <ArrowRight className="w-4 h-4" />
                 </button>
@@ -193,8 +193,8 @@ export default function Hero({ data }: HeroProps) {
 
             {/* Secondary Button - White/Translucent with dark text */}
             {secondaryButton && (
-              <Link href={secondaryButton.link || "#"}>
-                <button className=" cursor-pointer bg-white/20 backdrop-blur-sm border-2 border-white/50 hover:bg-white/30 text-white hover:text-gray-900 px-7 py-3 rounded-full font-semibold text-[15px] sm:text-[16px] transition-all duration-200 transform hover:scale-105 hover:shadow-xl flex items-center gap-2">
+              <Link href={secondaryButton.link || "#"} className="w-full sm:w-auto">
+                <button className=" cursor-pointer bg-white/20 backdrop-blur-sm border-2 border-white/50 hover:bg-white/30 text-white hover:text-gray-900 px-7 py-3 rounded-full font-semibold text-[15px] sm:text-[16px] transition-all duration-200 transform hover:scale-105 hover:shadow-xl flex items-center gap-2 w-full sm:w-auto justify-center">
                   <Map className="w-4 h-4" />
                   {secondaryButton.text}
                 </button>

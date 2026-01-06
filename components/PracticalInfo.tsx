@@ -179,7 +179,7 @@ export default function PracticalInfo({ data }: PracticalInfoProps) {
     if (!bookingPermits) return null;
 
     return (
-      <div>
+      <div >
         <h3 className="text-2xl font-bold text-gray-900 mb-6">
           {bookingPermits.title || "Booking & Permits"}
         </h3>
@@ -447,7 +447,7 @@ export default function PracticalInfo({ data }: PracticalInfoProps) {
   };
 
   return (
-    <section id="practical" className="py-20 bg-gray-50">
+    <section id="practical-info" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">

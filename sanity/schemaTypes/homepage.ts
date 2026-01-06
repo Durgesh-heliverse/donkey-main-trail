@@ -1137,8 +1137,18 @@ export default defineType({
                     },
                     {
                       name: "buttonLink",
-                      title: "Button Link",
+                      title: "Button Link (Optional)",
                       type: "url",
+                      description: "Use this if you want to link to an external URL",
+                    },
+                    {
+                      name: "pdfFile",
+                      title: "PDF File (Optional)",
+                      type: "file",
+                      description: "Upload a PDF file to download. If both PDF and link are provided, PDF takes priority.",
+                      options: {
+                        accept: ".pdf",
+                      },
                     },
                   ],
                 },
@@ -1220,19 +1230,196 @@ export default defineType({
           type: "object",
           fields: [
             {
-              name: "availableDates",
-              title: "Available Dates",
+              name: "availableDateRanges",
+              title: "Available Date Ranges (Easier Selection)",
               type: "array",
-              of: [{ type: "date" }],
+              of: [
+                {
+                  type: "object",
+                  fields: [
+                    {
+                      name: "startDate",
+                      title: "Start Date",
+                      type: "date",
+                      validation: (Rule) =>
+                        Rule.required().custom((date: string | undefined) => {
+                          if (!date) return true;
+                          try {
+                            const selectedDate = new Date(date);
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            selectedDate.setHours(0, 0, 0, 0);
+                            if (selectedDate < today) {
+                              return "Start date cannot be in the past. Please select today or a future date.";
+                            }
+                            return true;
+                          } catch {
+                            return "Invalid date format.";
+                          }
+                        }),
+                    },
+                    {
+                      name: "endDate",
+                      title: "End Date",
+                      type: "date",
+                      validation: (Rule) =>
+                        Rule.required().custom((date: string | undefined) => {
+                          if (!date) return true;
+                          try {
+                            const selectedDate = new Date(date);
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            selectedDate.setHours(0, 0, 0, 0);
+                            if (selectedDate < today) {
+                              return "End date cannot be in the past. Please select today or a future date.";
+                            }
+                            return true;
+                          } catch {
+                            return "Invalid date format.";
+                          }
+                        }),
+                    },
+                  ],
+                  preview: {
+                    select: {
+                      startDate: "startDate",
+                      endDate: "endDate",
+                    },
+                    prepare({ startDate, endDate }) {
+                      return {
+                        title: `${startDate || "?"} to ${endDate || "?"}`,
+                        subtitle: "Available Date Range",
+                      };
+                    },
+                  },
+                },
+              ],
               description:
-                "Select dates that are available for booking (green color)",
+                "Add date ranges to automatically mark all dates in between as available. Past dates are automatically removed.",
+            },
+            {
+              name: "availableDates",
+              title: "Available Dates (Individual)",
+              type: "array",
+              of: [
+                {
+                  type: "date",
+                  validation: (Rule) =>
+                    Rule.custom((date: string | undefined) => {
+                      if (!date) return true;
+                      try {
+                        const selectedDate = new Date(date);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        selectedDate.setHours(0, 0, 0, 0);
+                        if (selectedDate < today) {
+                          return "Past dates are not allowed. Please select today or a future date.";
+                        }
+                        return true;
+                      } catch {
+                        return "Invalid date format.";
+                      }
+                    }),
+                },
+              ],
+              description:
+                "Select individual dates that are available for booking (green color). Past dates cannot be selected. Tip: Use date ranges above for easier bulk selection.",
+            },
+            {
+              name: "fullyBookedDateRanges",
+              title: "Fully Booked Date Ranges (Easier Selection)",
+              type: "array",
+              of: [
+                {
+                  type: "object",
+                  fields: [
+                    {
+                      name: "startDate",
+                      title: "Start Date",
+                      type: "date",
+                      validation: (Rule) =>
+                        Rule.required().custom((date: string | undefined) => {
+                          if (!date) return true;
+                          try {
+                            const selectedDate = new Date(date);
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            selectedDate.setHours(0, 0, 0, 0);
+                            if (selectedDate < today) {
+                              return "Start date cannot be in the past. Please select today or a future date.";
+                            }
+                            return true;
+                          } catch {
+                            return "Invalid date format.";
+                          }
+                        }),
+                    },
+                    {
+                      name: "endDate",
+                      title: "End Date",
+                      type: "date",
+                      validation: (Rule) =>
+                        Rule.required().custom((date: string | undefined) => {
+                          if (!date) return true;
+                          try {
+                            const selectedDate = new Date(date);
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            selectedDate.setHours(0, 0, 0, 0);
+                            if (selectedDate < today) {
+                              return "End date cannot be in the past. Please select today or a future date.";
+                            }
+                            return true;
+                          } catch {
+                            return "Invalid date format.";
+                          }
+                        }),
+                    },
+                  ],
+                  preview: {
+                    select: {
+                      startDate: "startDate",
+                      endDate: "endDate",
+                    },
+                    prepare({ startDate, endDate }) {
+                      return {
+                        title: `${startDate || "?"} to ${endDate || "?"}`,
+                        subtitle: "Fully Booked Date Range",
+                      };
+                    },
+                  },
+                },
+              ],
+              description:
+                "Add date ranges to automatically mark all dates in between as fully booked. Past dates are automatically removed.",
             },
             {
               name: "fullyBookedDates",
-              title: "Fully Booked Dates",
+              title: "Fully Booked Dates (Individual)",
               type: "array",
-              of: [{ type: "date" }],
-              description: "Select dates that are fully booked (red color)",
+              of: [
+                {
+                  type: "date",
+                  validation: (Rule) =>
+                    Rule.custom((date: string | undefined) => {
+                      if (!date) return true;
+                      try {
+                        const selectedDate = new Date(date);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        selectedDate.setHours(0, 0, 0, 0);
+                        if (selectedDate < today) {
+                          return "Past dates are not allowed. Please select today or a future date.";
+                        }
+                        return true;
+                      } catch {
+                        return "Invalid date format.";
+                      }
+                    }),
+                },
+              ],
+              description:
+                "Select individual dates that are fully booked (red color). Past dates cannot be selected. Tip: Use date ranges above for easier bulk selection.",
             },
             {
               name: "helpInfo",

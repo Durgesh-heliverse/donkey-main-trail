@@ -210,7 +210,14 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
         title,
         description,
         buttonText,
-        buttonLink
+        buttonLink,
+        pdfFile {
+          asset-> {
+            _id,
+            url,
+            originalFilename
+          }
+        }
       }
     },
     form {
@@ -228,7 +235,15 @@ const HOMEPAGE_QUERY = `*[_type == "homepage"][0]{
       submitButtonText
     },
     calendar {
+      availableDateRanges[] {
+        startDate,
+        endDate
+      },
       availableDates,
+      fullyBookedDateRanges[] {
+        startDate,
+        endDate
+      },
       fullyBookedDates,
       helpInfo {
         title,
@@ -949,6 +964,102 @@ export default async function Home() {
         return dates.map(formatDate).filter((d): d is string => !!d);
       };
 
+      // Expand date ranges into individual dates
+      const expandDateRanges = (
+        ranges: Array<{ startDate?: string; endDate?: string }> | undefined
+      ): string[] => {
+        if (!ranges || !Array.isArray(ranges)) return [];
+        const dates: string[] = [];
+
+        ranges.forEach((range) => {
+          if (!range.startDate || !range.endDate) return;
+
+          let start = new Date(range.startDate);
+          let end = new Date(range.endDate);
+          start.setHours(0, 0, 0, 0);
+          end.setHours(0, 0, 0, 0);
+
+          // Swap if start is after end
+          if (start > end) {
+            const temp = start;
+            start = end;
+            end = temp;
+          }
+
+          // Generate all dates in the range
+          const current = new Date(start);
+          while (current <= end) {
+            dates.push(formatDate(current.toISOString()) || "");
+            current.setDate(current.getDate() + 1);
+          }
+        });
+
+        return dates.filter((d) => d !== "");
+      };
+
+      // Merge and deduplicate date arrays
+      const mergeDates = (
+        ranges: string[],
+        individual: string[]
+      ): string[] => {
+        const allDates = [...ranges, ...individual];
+        return Array.from(new Set(allDates)).sort();
+      };
+
+      // Filter out past dates
+      const filterPastDates = (dates: string[]): string[] => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
+
+        return dates.filter((dateStr) => {
+          try {
+            const date = new Date(dateStr);
+            date.setHours(0, 0, 0, 0);
+            return date >= today; // Only keep dates that are today or in the future
+          } catch {
+            return false; // Remove invalid dates
+          }
+        });
+      };
+
+      // Process available dates
+      const availableDateRanges = expandDateRanges(
+        data.contactForm.calendar?.availableDateRanges
+      );
+      const availableIndividualDates =
+        data.contactForm.calendar?.availableDates &&
+        data.contactForm.calendar.availableDates.length > 0
+          ? formatDates(data.contactForm.calendar.availableDates)
+          : [];
+      const allAvailableDates = mergeDates(
+        availableDateRanges,
+        availableIndividualDates
+      );
+
+      // Process fully booked dates
+      const fullyBookedDateRanges = expandDateRanges(
+        data.contactForm.calendar?.fullyBookedDateRanges
+      );
+      const fullyBookedIndividualDates =
+        data.contactForm.calendar?.fullyBookedDates &&
+        data.contactForm.calendar.fullyBookedDates.length > 0
+          ? formatDates(data.contactForm.calendar.fullyBookedDates)
+          : [];
+      const allFullyBookedDates = mergeDates(
+        fullyBookedDateRanges,
+        fullyBookedIndividualDates
+      );
+
+      // Use defaults if no dates provided
+      const finalAvailableDates =
+        allAvailableDates.length > 0
+          ? allAvailableDates
+          : DEFAULT_CONTACT_FORM.calendar.availableDates;
+      const finalFullyBookedDates =
+        allFullyBookedDates.length > 0
+          ? allFullyBookedDates
+          : DEFAULT_CONTACT_FORM.calendar.fullyBookedDates;
+
       contactFormData = {
         ...DEFAULT_CONTACT_FORM,
         ...data.contactForm,
@@ -958,16 +1069,8 @@ export default async function Home() {
           data.contactForm.quickActions || DEFAULT_CONTACT_FORM.quickActions,
         form: data.contactForm.form || DEFAULT_CONTACT_FORM.form,
         calendar: {
-          availableDates:
-            data.contactForm.calendar?.availableDates &&
-            data.contactForm.calendar.availableDates.length > 0
-              ? formatDates(data.contactForm.calendar.availableDates)
-              : DEFAULT_CONTACT_FORM.calendar.availableDates,
-          fullyBookedDates:
-            data.contactForm.calendar?.fullyBookedDates &&
-            data.contactForm.calendar.fullyBookedDates.length > 0
-              ? formatDates(data.contactForm.calendar.fullyBookedDates)
-              : DEFAULT_CONTACT_FORM.calendar.fullyBookedDates,
+          availableDates: filterPastDates(finalAvailableDates),
+          fullyBookedDates: filterPastDates(finalFullyBookedDates),
           helpInfo:
             data.contactForm.calendar?.helpInfo ||
             DEFAULT_CONTACT_FORM.calendar.helpInfo,

@@ -117,7 +117,7 @@ const DEFAULT_FOOTER = {
     links: [
       { label: "Trail Information", href: "#trail-info" },
       { label: "Interactive Map", href: "#interactive-map" },
-      { label: "Practical Info", href: "#practical" },
+      { label: "Practical Info", href: "#practical-info" },
       { label: "Gallery", href: "#gallery" },
       { label: "Reviews", href: "#reviews" },
     ],

@@ -419,44 +419,47 @@ export default function InteractiveMap({ data }: InteractiveMapProps) {
               className="relative bg-black rounded-2xl overflow-hidden shadow-2xl max-w-5xl w-full"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
-              <button
-                onClick={handleCloseImageModal}
-                className="absolute top-4 right-4 z-20 w-12 h-12 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 cursor-pointer"
-                aria-label="Close modal"
-              >
-                <X className="h-6 w-6 text-white" />
-              </button>
-
-              {/* Navigation Arrows */}
-              {selectedImages.length > 1 && (
-                <>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePrevImage();
-                    }}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft className="h-6 w-6 text-white cursor-pointer" />
-                  </button>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleNextImage();
-                    }}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
-                    aria-label="Next image"
-                  >
-                    <ChevronRight className="h-6 w-6 text-white cursor-pointer" />
-                  </button>
-                </>
-              )}
-
               {/* Main Image/Video Container */}
               <div className="relative w-full h-[80vh] flex items-center justify-center">
+                {/* Close Button - positioned relative to image container */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCloseImageModal();
+                  }}
+                  className="absolute top-4 right-4 z-30 w-12 h-12 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 cursor-pointer"
+                  aria-label="Close modal"
+                >
+                  <X className="h-6 w-6 text-white" />
+                </button>
+
+                {/* Navigation Arrows - positioned relative to image container, centered on actual image */}
+                {selectedImages.length > 1 && (
+                  <>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePrevImage();
+                      }}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center transition-all duration-200 group"
+                      aria-label="Previous image"
+                    >
+                      <ChevronLeft className="h-8 w-8 text-white cursor-pointer drop-shadow-lg group-hover:scale-110 transition-transform" />
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNextImage();
+                      }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 flex items-center justify-center transition-all duration-200 group"
+                      aria-label="Next image"
+                    >
+                      <ChevronRight className="h-8 w-8 text-white cursor-pointer drop-shadow-lg group-hover:scale-110 transition-transform" />
+                    </button>
+                  </>
+                )}
+
                 <div className="relative w-full h-full max-w-full max-h-full">
                   {selectedImages[currentImageIndex]?.videoUrl ? (
                     <div className="relative w-full h-full">

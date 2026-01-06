@@ -11,6 +11,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import Calendar from "./Calendar";
+import { projectId, dataset } from "@/sanity/env";
 
 interface ContactFormProps {
   data: {
@@ -33,6 +34,13 @@ interface ContactFormProps {
         description: string;
         buttonText: string;
         buttonLink?: string;
+        pdfFile?: {
+          asset?: {
+            _id?: string;
+            url?: string;
+            originalFilename?: string;
+          };
+        };
       }>;
     };
     form?: {
@@ -279,39 +287,77 @@ export default function ContactForm({ data }: ContactFormProps) {
             {quickActions && (
               <div className="bg-white rounded-2xl p-6 shadow-lg">
                 <h4 className="font-semibold text-gray-900 mb-6 flex items-center">
-                  {iconMap.messageCircle}
+                  {/* {iconMap.messageCircle} */}
                   <span className="ml-2">
                     {quickActions.title || "Quick Actions"}
                   </span>
                 </h4>
                 <div className="space-y-4">
-                  {quickActions.items?.map((action, index) => (
-                    <div
-                      key={index}
-                      className="p-4 bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-200 cursor-pointer"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          {iconMap[action.icon] || iconMap.messageCircle}
-                          <div>
-                            <h5 className="font-medium text-gray-900">
-                              {action.title}
-                            </h5>
-                            <p className="text-sm text-gray-600">
-                              {action.description}
-                            </p>
+                  {quickActions.items?.map((action, index) => {
+                    const handleDownload = async (e: React.MouseEvent) => {
+                      e.preventDefault();
+                      
+                      // If PDF file exists, download it
+                      if (action.pdfFile?.asset?.url) {
+                        try {
+                          const fileUrl = action.pdfFile.asset.url;
+                          
+                          // Use original filename if available, otherwise use action title
+                          const filename = action.pdfFile.asset.originalFilename || 
+                            action.title.replace(/\s+/g, "-") + ".pdf";
+                          
+                          // Add ?dl= parameter to force download with custom filename
+                          const downloadUrl = `${fileUrl}?dl=${encodeURIComponent(filename)}`;
+                          
+                          // Create a temporary anchor element to trigger download
+                          const link = document.createElement("a");
+                          link.href = downloadUrl;
+                          link.download = filename;
+                          link.target = "_blank";
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                        } catch (error) {
+                          console.error("Error downloading PDF:", error);
+                          // Fallback: try to open in new tab
+                          if (action.buttonLink) {
+                            window.open(action.buttonLink, "_blank");
+                          }
+                        }
+                      } else if (action.buttonLink) {
+                        // Fallback to button link if no PDF
+                        window.open(action.buttonLink, "_blank");
+                      } else {
+                        console.warn("No PDF file or button link available for:", action.title);
+                      }
+                    };
+
+                    return (
+                      <div
+                        key={index}
+                        className="p-4 bg-gray-50 rounded-xl hover:bg-orange-50 transition-colors duration-200 cursor-pointer"
+                        onClick={handleDownload}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            {iconMap[action.icon] || iconMap.messageCircle}
+                            <div>
+                              <h5 className="font-medium text-gray-900">
+                                {action.title}
+                              </h5>
+                              <p className="text-sm text-gray-600">
+                                {action.description}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-orange-600 hover:text-orange-700 font-medium text-sm flex items-center space-x-1">
+                            {iconMap.download}
+                            <span>{action.buttonText}</span>
                           </div>
                         </div>
-                        <a
-                          href={action.buttonLink || "#"}
-                          className="text-orange-600 hover:text-orange-700 font-medium text-sm flex items-center space-x-1"
-                        >
-                          {iconMap.download}
-                          <span>{action.buttonText}</span>
-                        </a>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}

@@ -65,25 +65,26 @@ export default function Calendar({
   const getDateStatus = (date: Date): "available" | "booked" | "today" | "disabled" => {
     const dateStr = formatDate(date);
     const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-    // Check if it's today (regardless of month)
-    if (dateOnly.getTime() === today.getTime()) {
-      return "today";
-    }
+    const isToday = dateOnly.getTime() === today.getTime();
 
     // Check if it's in the current month
     if (date.getMonth() !== currentMonth.getMonth()) {
       return "disabled";
     }
 
-    // Check if fully booked
+    // Check if fully booked (including today)
     if (fullyBookedDates.includes(dateStr)) {
-      return "booked";
+      return isToday ? "booked" : "booked";
     }
 
-    // Check if available
+    // Check if available (including today)
     if (availableDates.includes(dateStr)) {
-      return "available";
+      return isToday ? "available" : "available";
+    }
+
+    // If it's today but not in available or booked, mark as disabled
+    if (isToday) {
+      return "disabled";
     }
 
     // Default to disabled if not in available dates
@@ -94,8 +95,8 @@ export default function Calendar({
   const handleDateClick = (date: Date) => {
     const status = getDateStatus(date);
     const dateStr = formatDate(date);
-    // Allow clicking if available or if it's today and available
-    if (status === "available" || (status === "today" && availableDates.includes(dateStr))) {
+    // Only allow clicking if available (today can be clicked if available, but not if booked)
+    if (status === "available") {
       onDateSelect(dateStr);
       onClose();
     }
@@ -188,10 +189,11 @@ export default function Calendar({
             const status = getDateStatus(date);
             const isOtherMonth = date.getMonth() !== currentMonth.getMonth();
             const dateStr = formatDate(date);
-            const isToday = status === "today";
-            const isAvailable = status === "available" || (isToday && availableDates.includes(dateStr));
+            const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            const isToday = dateOnly.getTime() === today.getTime();
+            const isAvailable = status === "available";
             const isBooked = status === "booked";
-            const isDisabled = isOtherMonth || isBooked || (!isAvailable && !isToday);
+            const isDisabled = isOtherMonth || isBooked || !isAvailable;
             const day = date.getDate();
 
             return (
@@ -204,8 +206,10 @@ export default function Calendar({
                   ${
                     isOtherMonth
                       ? "text-gray-300 cursor-not-allowed"
-                      : isToday
-                      ? "bg-orange-100 text-orange-600 font-semibold cursor-pointer"
+                      : isToday && isBooked
+                      ? "bg-red-100 text-red-700 font-semibold cursor-not-allowed border-2 border-red-300"
+                      : isToday && isAvailable
+                      ? "bg-green-100 text-green-700 font-semibold cursor-pointer border-2 border-green-300 hover:bg-green-200"
                       : isAvailable
                       ? "bg-green-100 text-green-700 hover:bg-green-200 cursor-pointer"
                       : isBooked
