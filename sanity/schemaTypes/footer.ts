@@ -127,6 +127,15 @@ export default defineType({
                   type: "boolean",
                   description: "Scrolls to contact form when clicked",
                 },
+                {
+                  name: "pdfFile",
+                  title: "PDF File (Optional)",
+                  type: "file",
+                  description: "Upload a PDF file to download. If both PDF and link are provided, PDF takes priority.",
+                  options: {
+                    accept: ".pdf",
+                  },
+                },
               ],
             },
           ],

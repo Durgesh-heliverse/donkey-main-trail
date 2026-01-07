@@ -234,10 +234,6 @@ export default function Calendar({
             <div className="w-4 h-4 bg-red-100 rounded"></div>
             <span className="text-sm text-gray-600">Fully Booked</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-4 h-4 bg-orange-100 rounded"></div>
-            <span className="text-sm text-gray-600">Today</span>
-          </div>
         </div>
 
         {/* Need Help Section */}

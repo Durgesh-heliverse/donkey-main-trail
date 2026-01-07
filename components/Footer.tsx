@@ -18,6 +18,7 @@ import {
   Users,
 } from "lucide-react";
 import { urlFor } from "@/sanity/lib/image";
+import { projectId, dataset } from "@/sanity/env";
 
 interface FooterProps {
   data: {
@@ -44,6 +45,13 @@ interface FooterProps {
         href: string;
         isExternal?: boolean;
         hasAvailabilityTrigger?: boolean;
+        pdfFile?: {
+          asset?: {
+            _id?: string;
+            url?: string;
+            originalFilename?: string;
+          };
+        };
       }>;
     };
     contactInfo?: {
@@ -255,10 +263,26 @@ export default function Footer({ data }: FooterProps) {
                     </button>
                   ) : (
                     <a
-                      href={link.href || "#"}
+                      href={link.href }
                       target={link.isExternal ? "_blank" : undefined}
                       rel={link.isExternal ? "noopener noreferrer" : undefined}
-                      className="text-gray-400 hover:text-orange-400 transition-colors duration-200 flex items-center space-x-2"
+                      onClick={(e) => {
+                        if (link.pdfFile?.asset?.url) {
+                          e.preventDefault();
+                          const fileUrl = link.pdfFile.asset.url;
+                          const filename = link.pdfFile.asset.originalFilename || 
+                            link.label.replace(/\s+/g, "-") + ".pdf";
+                          const downloadUrl = `${fileUrl}?dl=${encodeURIComponent(filename)}`;
+                          const linkElement = document.createElement("a");
+                          linkElement.href = downloadUrl;
+                          linkElement.download = filename;
+                          linkElement.target = "_blank";
+                          document.body.appendChild(linkElement);
+                          linkElement.click();
+                          document.body.removeChild(linkElement);
+                        }
+                      }}
+                      className="cursor-pointer text-gray-400 hover:text-orange-400 transition-colors duration-200 flex items-center space-x-2"
                     >
                       <span>{link.label}</span>
                       {link.isExternal && <ExternalLink className="h-3 w-3" />}

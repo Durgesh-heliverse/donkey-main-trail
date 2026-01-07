@@ -56,7 +56,7 @@ const iconMap: { [key: string]: React.ReactNode } = {
   tent: <Tent className="h-5 w-5 text-white" />,
   bed: <Bed className="h-5 w-5 text-white" />,
   utensils: <Utensils className="h-5 w-5 text-white" />,
-  mountain: <Mountain className="h-2 w-2 text-white" />,
+  mountain: <Mountain className="h-5 w-5 text-white" />,
 };
 
 const typeColorMap: { [key: string]: string } = {

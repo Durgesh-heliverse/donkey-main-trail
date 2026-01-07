@@ -49,7 +49,14 @@ const FOOTER_QUERY = `*[_type == "footer"][0]{
       label,
       href,
       isExternal,
-      hasAvailabilityTrigger
+      hasAvailabilityTrigger,
+      pdfFile {
+        asset-> {
+          _id,
+          url,
+          originalFilename
+        }
+      }
     }
   },
   contactInfo {

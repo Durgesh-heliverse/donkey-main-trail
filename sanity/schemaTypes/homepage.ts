@@ -1241,43 +1241,13 @@ export default defineType({
                       name: "startDate",
                       title: "Start Date",
                       type: "date",
-                      validation: (Rule) =>
-                        Rule.required().custom((date: string | undefined) => {
-                          if (!date) return true;
-                          try {
-                            const selectedDate = new Date(date);
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            selectedDate.setHours(0, 0, 0, 0);
-                            if (selectedDate < today) {
-                              return "Start date cannot be in the past. Please select today or a future date.";
-                            }
-                            return true;
-                          } catch {
-                            return "Invalid date format.";
-                          }
-                        }),
+                      validation: (Rule) => Rule.required(),
                     },
                     {
                       name: "endDate",
                       title: "End Date",
                       type: "date",
-                      validation: (Rule) =>
-                        Rule.required().custom((date: string | undefined) => {
-                          if (!date) return true;
-                          try {
-                            const selectedDate = new Date(date);
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            selectedDate.setHours(0, 0, 0, 0);
-                            if (selectedDate < today) {
-                              return "End date cannot be in the past. Please select today or a future date.";
-                            }
-                            return true;
-                          } catch {
-                            return "Invalid date format.";
-                          }
-                        }),
+                      validation: (Rule) => Rule.required(),
                     },
                   ],
                   preview: {
@@ -1304,22 +1274,7 @@ export default defineType({
               of: [
                 {
                   type: "date",
-                  validation: (Rule) =>
-                    Rule.custom((date: string | undefined) => {
-                      if (!date) return true;
-                      try {
-                        const selectedDate = new Date(date);
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        selectedDate.setHours(0, 0, 0, 0);
-                        if (selectedDate < today) {
-                          return "Past dates are not allowed. Please select today or a future date.";
-                        }
-                        return true;
-                      } catch {
-                        return "Invalid date format.";
-                      }
-                    }),
+                  validation: (Rule) => Rule.optional(),
                 },
               ],
               description:
@@ -1337,43 +1292,13 @@ export default defineType({
                       name: "startDate",
                       title: "Start Date",
                       type: "date",
-                      validation: (Rule) =>
-                        Rule.required().custom((date: string | undefined) => {
-                          if (!date) return true;
-                          try {
-                            const selectedDate = new Date(date);
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            selectedDate.setHours(0, 0, 0, 0);
-                            if (selectedDate < today) {
-                              return "Start date cannot be in the past. Please select today or a future date.";
-                            }
-                            return true;
-                          } catch {
-                            return "Invalid date format.";
-                          }
-                        }),
+                      validation: (Rule) => Rule.required(),
                     },
                     {
                       name: "endDate",
                       title: "End Date",
                       type: "date",
-                      validation: (Rule) =>
-                        Rule.required().custom((date: string | undefined) => {
-                          if (!date) return true;
-                          try {
-                            const selectedDate = new Date(date);
-                            const today = new Date();
-                            today.setHours(0, 0, 0, 0);
-                            selectedDate.setHours(0, 0, 0, 0);
-                            if (selectedDate < today) {
-                              return "End date cannot be in the past. Please select today or a future date.";
-                            }
-                            return true;
-                          } catch {
-                            return "Invalid date format.";
-                          }
-                        }),
+                      validation: (Rule) => Rule.required(),
                     },
                   ],
                   preview: {
@@ -1400,22 +1325,7 @@ export default defineType({
               of: [
                 {
                   type: "date",
-                  validation: (Rule) =>
-                    Rule.custom((date: string | undefined) => {
-                      if (!date) return true;
-                      try {
-                        const selectedDate = new Date(date);
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        selectedDate.setHours(0, 0, 0, 0);
-                        if (selectedDate < today) {
-                          return "Past dates are not allowed. Please select today or a future date.";
-                        }
-                        return true;
-                      } catch {
-                        return "Invalid date format.";
-                      }
-                    }),
+                  validation: (Rule) => Rule.optional(),
                 },
               ],
               description:

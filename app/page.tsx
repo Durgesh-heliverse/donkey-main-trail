@@ -986,10 +986,16 @@ export default async function Home() {
             end = temp;
           }
 
-          // Generate all dates in the range
+          // Generate all dates in the range (inclusive of both start and end)
           const current = new Date(start);
+          // Include the end date by using <= comparison
           while (current <= end) {
-            dates.push(formatDate(current.toISOString()) || "");
+            // Format date directly from the Date object to avoid timezone issues
+            const year = current.getFullYear();
+            const month = String(current.getMonth() + 1).padStart(2, "0");
+            const day = String(current.getDate()).padStart(2, "0");
+            dates.push(`${year}-${month}-${day}`);
+            // Increment after adding the date
             current.setDate(current.getDate() + 1);
           }
         });
@@ -1050,15 +1056,24 @@ export default async function Home() {
         fullyBookedIndividualDates
       );
 
-      // Use defaults if no dates provided
-      const finalAvailableDates =
-        allAvailableDates.length > 0
-          ? allAvailableDates
-          : DEFAULT_CONTACT_FORM.calendar.availableDates;
-      const finalFullyBookedDates =
-        allFullyBookedDates.length > 0
-          ? allFullyBookedDates
-          : DEFAULT_CONTACT_FORM.calendar.fullyBookedDates;
+      // Only use Sanity data if it exists, otherwise use empty arrays (no dates)
+      const hasSanityCalendarData = 
+        (data.contactForm.calendar?.availableDateRanges && 
+         data.contactForm.calendar.availableDateRanges.length > 0) ||
+        (data.contactForm.calendar?.availableDates && 
+         data.contactForm.calendar.availableDates.length > 0) ||
+        (data.contactForm.calendar?.fullyBookedDateRanges && 
+         data.contactForm.calendar.fullyBookedDateRanges.length > 0) ||
+        (data.contactForm.calendar?.fullyBookedDates && 
+         data.contactForm.calendar.fullyBookedDates.length > 0);
+
+      // Use Sanity data if it exists, otherwise use empty arrays (don't show any dates)
+      const finalAvailableDates = hasSanityCalendarData
+        ? allAvailableDates
+        : [];
+      const finalFullyBookedDates = hasSanityCalendarData
+        ? allFullyBookedDates
+        : [];
 
       contactFormData = {
         ...DEFAULT_CONTACT_FORM,
