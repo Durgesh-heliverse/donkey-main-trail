@@ -11,6 +11,9 @@ import Script from "next/script";
 export const metadata: Metadata = {
   title: "The Legendary Donkey Trail",
   description: "Calitzdorp's Premier Hiking Experience",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 const HEADER_QUERY = `*[_type == "header"][0]{
@@ -318,7 +321,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
      <head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-2J2FR1ME5Y"
           strategy="afterInteractive"
