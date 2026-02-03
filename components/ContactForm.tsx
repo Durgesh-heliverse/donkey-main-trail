@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MapPin,
   Phone,
@@ -10,8 +10,12 @@ import {
   Send,
   CheckCircle,
 } from "lucide-react";
+import emailjs from "@emailjs/browser";
 import Calendar from "./Calendar";
-import { projectId, dataset } from "@/sanity/env";
+
+const EMAILJS_PUBLIC_KEY = "5LuduDt7ss2FPldfB";
+const EMAILJS_SERVICE_ID = "service_ykzoszl";
+const EMAILJS_TEMPLATE_ID = "template_r2isxmd";
 
 interface ContactFormProps {
   data: {
@@ -111,6 +115,11 @@ export default function ContactForm({ data }: ContactFormProps) {
     successMessage,
   } = data;
 
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }, []);
+
   // Listen for custom event from Footer to open calendar
   React.useEffect(() => {
     const handleOpenCalendar = () => {
@@ -165,6 +174,26 @@ export default function ContactForm({ data }: ContactFormProps) {
           day: "numeric",
         });
       }
+
+      // Send email via EmailJS (fire-and-forget, doesn't block form)
+      const concatenatedMessage = `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nPreferred Hike Date: ${formData.hikeDate || "Not selected"}\nGroup Size: ${formData.groupSize || "Not selected"}\nExperience: ${formData.experience || "Not selected"}\nTimestamp: ${dateOfEnquiry}\n\nMessage:\n${formData.message}\n\nPlease follow up with the customer within 24-48 hours.`;
+
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone,
+        message: concatenatedMessage,
+      };
+
+      const emailPromise = emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams
+      );
+      const timeoutPromise = new Promise<{ status: number }>((resolve) => {
+        setTimeout(() => resolve({ status: 200 }), 3000);
+      });
+      Promise.race([emailPromise, timeoutPromise]).catch(() => {});
 
       const response = await fetch("/api/contact", {
         method: "POST",

@@ -7,7 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PreviewBanner from "@/components/PreviewBanner";
 import { headers } from "next/headers";
-
+import Script from "next/script";
 export const metadata: Metadata = {
   title: "The Legendary Donkey Trail",
   description: "Calitzdorp's Premier Hiking Experience",
@@ -317,6 +317,17 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+     <head>
+        <link rel="icon" href="/Favicon%20Original.ico" type="image/x-icon" />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-2J2FR1ME5Y"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-2J2FR1ME5Y');
+          `}
+        </Script>
+      </head>
       <body>
         {isDraftMode && <PreviewBanner />}
         {!isStudioRoute && headerData && <Header data={headerData} />}
