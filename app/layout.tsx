@@ -318,7 +318,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
      <head>
-        <link rel="icon" href="/Favicon%20Original.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-2J2FR1ME5Y"
           strategy="afterInteractive"
